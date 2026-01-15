@@ -1,0 +1,256 @@
+{
+  "articles": [
+    {
+      "id": "1",
+      "title": "Champions League Quarterfinals: Epic Showdown Between Giants",
+      "slug": "champions-league-quarterfinals-epic-showdown-between-giants",
+      "excerpt": "The quarterfinal stage brings together football's elite teams...",
+      "content": "Lorem ipsum...",
+      "image": "https://picsum.photos/800/450?random=1",
+      "author": {
+        "id": "user1",
+        "name": "Michael Thompson",
+        "avatar": "https://picsum.photos/100/100?random=101"
+      },
+      "category": "Football",
+      "categorySlug": "football",
+      "type": "breaking",
+      "publishedAt": "2024-03-15T10:30:00Z",
+      "readTime": 5,
+      "views": 12450,
+      "tags": ["Champions League", "Quarterfinals"],
+      "isFavorite": true
+    },
+    {
+      "id": "2",
+      "title": "NBA Playoffs: The Road to Championship Glory",
+      "slug": "nba-playoffs-the-road-to-championship-glory",
+      "excerpt": "As the regular season concludes...",
+      "content": "Lorem ipsum...",
+      "image": "https://picsum.photos/800/450?random=2",
+      "author": {
+        "id": "user2",
+        "name": "Sarah Martinez",
+        "avatar": "https://picsum.photos/100/100?random=102"
+      },
+      "category": "Basketball",
+      "categorySlug": "basketball",
+      "type": "analysis",
+      "publishedAt": "2024-03-14T14:20:00Z",
+      "readTime": 7,
+      "views": 8920,
+      "tags": ["NBA"],
+      "isFavorite": true
+    },
+    {
+      "id": "3",
+      "title": "Tennis Grand Slam: Rising Stars Make Their Mark",
+      "slug": "tennis-grand-slam-rising-stars-make-their-mark",
+      "excerpt": "Young talents are shaking up...",
+      "content": "Lorem ipsum...",
+      "image": "https://picsum.photos/800/450?random=3",
+      "author": {
+        "id": "user3",
+        "name": "David Chen",
+        "avatar": "https://picsum.photos/100/100?random=103"
+      },
+      "category": "Tennis",
+      "categorySlug": "tennis",
+      "type": "feature",
+      "publishedAt": "2024-03-13T09:15:00Z",
+      "readTime": 6,
+      "views": 6540,
+      "tags": ["Grand Slam"],
+      "isFavorite": false
+    },
+    {
+      "id": "4",
+      "title": "Formula 1 Season Opener: Speed and Strategy",
+      "slug": "formula-1-season-opener-speed-and-strategy",
+      "excerpt": "The new Formula 1 season kicks off...",
+      "content": "Lorem ipsum...",
+      "image": "https://picsum.photos/800/450?random=4",
+      "author": {
+        "id": "user1",
+        "name": "Michael Thompson",
+        "avatar": "https://picsum.photos/100/100?random=101"
+      },
+      "category": "Formula 1",
+      "categorySlug": "formula-1",
+      "type": "match-report",
+      "publishedAt": "2024-03-12T16:45:00Z",
+      "readTime": 8,
+      "views": 11230,
+      "tags": ["Formula 1"],
+      "isFavorite": false
+    },
+    {
+      "id": "5",
+      "title": "Olympic Preparation: Athletes Ready for Glory",
+      "slug": "olympic-preparation-athletes-ready-for-glory",
+      "excerpt": "With the Olympics approaching...",
+      "content": "Lorem ipsum...",
+      "image": "https://picsum.photos/800/450?random=5",
+      "author": {
+        "id": "user4",
+        "name": "Emma Wilson",
+        "avatar": "https://picsum.photos/100/100?random=104"
+      },
+      "category": "Olympics",
+      "categorySlug": "olympics",
+      "type": "feature",
+      "publishedAt": "2024-03-11T11:00:00Z",
+      "readTime": 6,
+      "views": 7890,
+      "tags": ["Olympics"],
+      "isFavorite": true
+    },
+    {
+      "id": "6",
+      "title": "Football Transfer Window: Big Moves and Surprises",
+      "slug": "football-transfer-window-big-moves-and-surprises",
+      "excerpt": "The transfer market is heating up...",
+      "content": "Lorem ipsum...",
+      "image": "https://picsum.photos/800/450?random=6",
+      "author": {
+        "id": "user2",
+        "name": "Sarah Martinez",
+        "avatar": "https://picsum.photos/100/100?random=102"
+      },
+      "category": "Football",
+      "categorySlug": "football",
+      "type": "breaking",
+      "publishedAt": "2024-03-10T13:30:00Z",
+      "readTime": 5,
+      "views": 15680,
+      "tags": ["Transfer Window"],
+      "isFavorite": false
+    },
+    {
+      "id": "7",
+      "title": "Basketball Analysis: The Evolution of the Three-Point Game",
+      "slug": "basketball-analysis-the-evolution-of-the-three-point-game",
+      "excerpt": "Modern basketball has been revolutionized...",
+      "content": "Lorem ipsum...",
+      "image": "https://picsum.photos/800/450?random=7",
+      "author": {
+        "id": "user3",
+        "name": "David Chen",
+        "avatar": "https://picsum.photos/100/100?random=103"
+      },
+      "category": "Basketball",
+      "categorySlug": "basketball",
+      "type": "analysis",
+      "publishedAt": "2024-03-09T10:15:00Z",
+      "readTime": 9,
+      "views": 7230,
+      "tags": ["Basketball"],
+      "isFavorite": false
+    },
+    {
+      "id": "8",
+      "title": "Opinion: The Future of Women's Sports",
+      "slug": "opinion-the-future-of-womens-sports",
+      "excerpt": "A deep dive into the growing recognition...",
+      "content": "Lorem ipsum...",
+      "image": "https://picsum.photos/800/450?random=8",
+      "author": {
+        "id": "user4",
+        "name": "Emma Wilson",
+        "avatar": "https://picsum.photos/100/100?random=104"
+      },
+      "category": "Opinion",
+      "categorySlug": "opinion",
+      "type": "opinion",
+      "publishedAt": "2024-03-08T15:20:00Z",
+      "readTime": 7,
+      "views": 5430,
+      "tags": ["Women's Sports"],
+      "isFavorite": false
+    },
+    {
+      "id": "9",
+      "title": "Football Match Report: Derby Day Drama",
+      "slug": "football-match-report-derby-day-drama",
+      "excerpt": "The local derby delivered everything fans expected...",
+      "content": "Lorem ipsum...",
+      "image": "https://picsum.photos/800/450?random=9",
+      "author": {
+        "id": "user1",
+        "name": "Michael Thompson",
+        "avatar": "https://picsum.photos/100/100?random=101"
+      },
+      "category": "Football",
+      "categorySlug": "football",
+      "type": "match-report",
+      "publishedAt": "2024-03-07T20:00:00Z",
+      "readTime": 6,
+      "views": 9870,
+      "tags": ["Derby"],
+      "isFavorite": true
+    },
+    {
+      "id": "10",
+      "title": "Tennis Feature: Behind the Scenes of a Grand Slam",
+      "slug": "tennis-feature-behind-the-scenes-of-a-grand-slam",
+      "excerpt": "An exclusive look at what goes into organizing...",
+      "content": "Lorem ipsum...",
+      "image": "https://picsum.photos/800/450?random=10",
+      "author": {
+        "id": "user3",
+        "name": "David Chen",
+        "avatar": "https://picsum.photos/100/100?random=103"
+      },
+      "category": "Tennis",
+      "categorySlug": "tennis",
+      "type": "feature",
+      "publishedAt": "2024-03-06T12:30:00Z",
+      "readTime": 8,
+      "views": 6340,
+      "tags": ["Tennis"],
+      "isFavorite": true
+    },
+    {
+      "id": "11",
+      "title": "Basketball Breaking: Star Player Injured Before Playoffs",
+      "slug": "basketball-breaking-star-player-injured-before-playoffs",
+      "excerpt": "A key player's injury just before the playoffs...",
+      "content": "Lorem ipsum...",
+      "image": "https://picsum.photos/800/450?random=11",
+      "author": {
+        "id": "user2",
+        "name": "Sarah Martinez",
+        "avatar": "https://picsum.photos/100/100?random=102"
+      },
+      "category": "Basketball",
+      "categorySlug": "basketball",
+      "type": "breaking",
+      "publishedAt": "2024-03-05T18:45:00Z",
+      "readTime": 4,
+      "views": 14560,
+      "tags": ["Basketball"],
+      "isFavorite": false
+    },
+    {
+      "id": "12",
+      "title": "Formula 1 Analysis: Aerodynamics and Speed",
+      "slug": "formula-1-analysis-aerodynamics-and-speed",
+      "excerpt": "How modern Formula 1 teams are pushing...",
+      "content": "Lorem ipsum...",
+      "image": "https://picsum.photos/800/450?random=12",
+      "author": {
+        "id": "user1",
+        "name": "Michael Thompson",
+        "avatar": "https://picsum.photos/100/100?random=101"
+      },
+      "category": "Formula 1",
+      "categorySlug": "formula-1",
+      "type": "analysis",
+      "publishedAt": "2024-03-04T09:30:00Z",
+      "readTime": 10,
+      "views": 8920,
+      "tags": ["Formula 1"],
+      "isFavorite": false
+    }
+  ]
+}

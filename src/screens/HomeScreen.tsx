@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { View, Text, ScrollView, StatusBar, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-// TENTO IMPORT OPRAVÍ CHYBU "Cannot find name 'Ionicons'"
 import { Ionicons } from '@expo/vector-icons'; 
 
 import { Header } from '../components/Header';
@@ -38,9 +37,7 @@ export default function HomeScreen() {
       try {
         setLoading(true);
         const fixtures = await fetchFixturesWithTeams(selectedDate);
-        if (!isActive) {
-          return;
-        }
+        if (!isActive) return;
 
         const grouped = new Map<string, Array<{ period: string; time: string; team1: string; score1: string; team2: string; score2: string }>>();
 
@@ -79,14 +76,10 @@ export default function HomeScreen() {
         );
         setErrorMessage(null);
       } catch (error) {
-        if (!isActive) {
-          return;
-        }
+        if (!isActive) return;
         setErrorMessage(formatError(error));
       } finally {
-        if (isActive) {
-          setLoading(false);
-        }
+        if (isActive) setLoading(false);
       }
     };
 
@@ -109,7 +102,7 @@ export default function HomeScreen() {
         <SportSidebar />
         
         <View className="flex-1 bg-gray-50">
-           {/* Horizontálny dátumovník môžeme pridať sem */}
+           {/* Horizontálny dátumovník */}
            <View className="bg-white border-b border-gray-100">
              <View className="flex-row items-center justify-between px-4 py-2">
                <Pressable
@@ -174,7 +167,8 @@ export default function HomeScreen() {
         </View>
       </View>
 
-      <BottomTabs />
+      {/* Explicitne povieme, že sme na 'Home' */}
+      <BottomTabs activeTab="Home" />
     </SafeAreaView>
   );
 }

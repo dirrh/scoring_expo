@@ -6,8 +6,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { Header } from '../components/Header';
 import { BottomTabs } from '../components/BottomTabs';
 import { NewsCard } from '../components/NewsCard';
-import { FilterModal } from '../components/FilterModal'; // Uisti sa, že máš tento súbor z predchádzajúceho kroku
-import { fetchNewsFromDB } from '../services/news'; 
+import { FilterModal } from '../components/FilterModal';
+import { fetchNews } from '../services/news'; 
 import { NewsArticle, NewsFilterState } from '../types/news';
 
 export default function NewsScreen() {
@@ -15,8 +15,7 @@ export default function NewsScreen() {
   const [loading, setLoading] = useState(true);
   const [filterVisible, setFilterVisible] = useState(false);
 
-  // 1. Definovanie defaultných filtrov
-  // showFavoritesOnly: false -> aby sa hneď načítali všetky správy
+  // Defaultné nastavenie filtrov
   const [filters, setFilters] = useState<NewsFilterState>({
     category: null,
     type: null,
@@ -27,8 +26,8 @@ export default function NewsScreen() {
   const loadData = async () => {
     try {
       setLoading(true);
-      // 2. OPRAVA CHYBY: Tu posielame 'filters' do funkcie
-      const data = await fetchNewsFromDB(filters);
+      // Voláme service, ktorý ťahá dáta z news.json a filtruje ich
+      const data = await fetchNews(filters);
       setArticles(data);
     } catch (e) {
       console.error("Chyba pri načítaní noviniek:", e);
@@ -37,12 +36,12 @@ export default function NewsScreen() {
     }
   };
 
-  // 3. Reload dát vždy, keď sa zmenia filtre
+  // Reload pri zmene filtrov
   useEffect(() => {
     loadData();
   }, [filters]);
 
-  // Pomocná funkcia na text v tlačidle filtra
+  // Text pre tlačidlo filtra
   const getFilterLabel = () => {
     if (filters.showFavoritesOnly) return "Favorites";
     if (filters.category) return filters.category;
@@ -57,10 +56,8 @@ export default function NewsScreen() {
 
       <View className="flex-1 bg-gray-50">
         
-        {/* Filter Header */}
+        {/* Filter Header Bar */}
         <View className="px-4 py-4 flex-row justify-between items-center z-10">
-          
-          {/* Tlačidlo na otvorenie filtra */}
           <Pressable 
             onPress={() => setFilterVisible(true)}
             className={`flex-row items-center px-4 py-2 rounded-full border shadow-sm ${filters.showFavoritesOnly ? 'bg-yellow-50 border-yellow-200' : 'bg-white border-gray-100'}`}
@@ -82,7 +79,7 @@ export default function NewsScreen() {
           </Pressable>
         </View>
 
-        {/* List článkov */}
+        {/* ScrollView s článkami */}
         <ScrollView 
           className="flex-1" 
           contentContainerStyle={{ paddingBottom: 100 }} 
@@ -98,6 +95,7 @@ export default function NewsScreen() {
                 <NewsCard key={article.id} article={article} />
               ))
             ) : (
+              // Empty State (ak filter nič nenašiel)
               <View className="mt-20 items-center px-8">
                 <View className="w-16 h-16 bg-gray-100 rounded-full items-center justify-center mb-4">
                   <Ionicons name="newspaper-outline" size={32} color="#9ca3af" />
@@ -118,9 +116,10 @@ export default function NewsScreen() {
         </ScrollView>
       </View>
 
-      <BottomTabs />
+      {/* Bottom Tabs - DÔLEŽITÉ: activeTab="News" */}
+      <BottomTabs activeTab="News" />
 
-      {/* Filter Modal - Rozbaľovacie menu */}
+      {/* Filter Modal */}
       <FilterModal 
         visible={filterVisible}
         onClose={() => setFilterVisible(false)}

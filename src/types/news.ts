@@ -4,20 +4,20 @@ export interface NewsArticle {
   slug: string;
   excerpt: string;
   content: string;
-  image: string | null;
-  // Tu definujeme presný tvar autora, žiadne any
+  image: string;
   author: {
     id: string;
     name: string;
-    avatar: string | null;
+    avatar: string;
   };
   category: string;
   categorySlug: string;
-  type: string; // Alebo union type 'breaking' | 'analysis' atď.
+  type: string;
   publishedAt: string;
   readTime: number;
   views: number;
   tags: string[];
+  isFavorite?: boolean;
 }
 
 export type SortOption = 'newest' | 'oldest';

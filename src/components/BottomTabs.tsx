@@ -1,13 +1,16 @@
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { useNavigation, useRoute } from '@react-navigation/native'; // 1. Importy pre navigáciu
+import { useNavigation } from '@react-navigation/native';
 
-export const BottomTabs = () => {
-  const navigation = useNavigation<any>(); // 2. Hook na ovládanie navigácie
-  const route = useRoute(); // 3. Hook na zistenie, kde práve si
+// Definícia props, ktoré komponent prijíma
+interface BottomTabsProps {
+  activeTab: 'Home' | 'News' | 'Shop' | 'Betting' | 'Profile';
+}
+
+export const BottomTabs = ({ activeTab }: BottomTabsProps) => {
+  const navigation = useNavigation<any>();
 
   const tabs = [
-    // routeName musí sedieť s tým, ako si nazval obrazovku v App.tsx (Stack.Screen name="...")
     { name: 'Shop', icon: 'cart-outline', library: 'Ionicons', routeName: 'Shop' },
     { name: 'News', icon: 'newspaper-outline', library: 'Ionicons', routeName: 'News' }, 
     { name: 'Home', icon: 'home-outline', library: 'Ionicons', routeName: 'Home' },
@@ -18,16 +21,15 @@ export const BottomTabs = () => {
   return (
     <View className="flex-row justify-around items-center bg-white py-3 border-t border-gray-100 absolute bottom-0 w-full pb-8">
       {tabs.map((tab, i) => {
-        // 4. Zistíme, či je tento tab aktívny porovnaním route.name
-        const isActive = route.name === tab.routeName;
+        // Porovnávame activeTab (prop) s routeName tabu
+        const isActive = activeTab === tab.routeName;
 
         return (
           <TouchableOpacity 
             key={i} 
             className="items-center gap-1"
-            // 5. Pridaná akcia na kliknutie
             onPress={() => {
-                // Ochrana: ak sme už na tej obrazovke, nepreklikávame znova (voliteľné)
+                // Preklikneme sa len ak nie sme na aktívnom tabe
                 if (!isActive) {
                     navigation.navigate(tab.routeName);
                 }

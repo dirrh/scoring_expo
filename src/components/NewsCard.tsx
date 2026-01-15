@@ -9,8 +9,6 @@ interface NewsCardProps {
 }
 
 export const NewsCard = ({ article }: NewsCardProps) => {
-  
-  // Formátovanie dátumu
   const formatDate = (dateString: string) => {
     try {
       const date = new Date(dateString);
@@ -27,8 +25,6 @@ export const NewsCard = ({ article }: NewsCardProps) => {
 
   return (
     <Pressable className="bg-white rounded-[20px] mb-4 shadow-sm mx-4 overflow-hidden active:opacity-95 border border-gray-100">
-      
-      {/* 1. Sekcia Obrázok */}
       <View className="h-48 w-full bg-gray-100 relative">
         {article.image ? (
           <Image
@@ -38,13 +34,10 @@ export const NewsCard = ({ article }: NewsCardProps) => {
             transition={300}
           />
         ) : (
-          // Placeholder ak obrázok chýba
           <View className="flex-1 items-center justify-center bg-gray-200">
             <Ionicons name="image-outline" size={40} color="#9ca3af" />
           </View>
         )}
-
-        {/* Odznak Kategórie (napr. Football, Premier League) */}
         <View className="absolute top-3 left-3 px-3 py-1 rounded-md bg-black/80 backdrop-blur-md">
           <Text className="text-white text-[10px] font-bold uppercase tracking-wider">
             {article.category}
@@ -52,17 +45,14 @@ export const NewsCard = ({ article }: NewsCardProps) => {
         </View>
       </View>
 
-      {/* 2. Sekcia Obsah */}
       <View className="p-4">
-        {/* Titulok */}
         <Text className="text-lg font-bold text-gray-900 leading-6 mb-3" numberOfLines={3}>
           {article.title}
         </Text>
         
-        {/* Riadok Autor a Dátum */}
         <View className="flex-row items-center justify-between mt-auto">
           <View className="flex-row items-center flex-1">
-             {/* Avatar autora (ak existuje) */}
+             {/* Tu bola chyba v starej verzii - teraz používame article.author.avatar */}
              {article.author.avatar ? (
                <Image 
                  source={{ uri: article.author.avatar }} 
@@ -70,13 +60,13 @@ export const NewsCard = ({ article }: NewsCardProps) => {
                  contentFit="cover"
                />
              ) : (
-               // Placeholder avatar
                <View className="w-6 h-6 rounded-full bg-gray-200 items-center justify-center mr-2">
                  <Ionicons name="person" size={12} color="gray" />
                </View>
              )}
             
             <View>
+              {/* Oprava: používame article.author.name */}
               <Text className="text-gray-900 text-xs font-bold" numberOfLines={1}>
                 {article.author.name}
               </Text>
