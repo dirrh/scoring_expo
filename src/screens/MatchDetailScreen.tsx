@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
-import { useNavigation } from '@react-navigation/native';
+import { NavigationContainer, NavigationContainerRefContext } from '@react-navigation/native';
 
-// Import nového komponentu tabuľky
-import { MatchTableTab } from '../components/MatchTableTab';
+// Import NOVÉHO komponentu tabuľky (SimpleTable)
+import { SimpleTable } from '../components/SimpleTable';
 
 // --- MOCK DÁTA ---
 const MOCK_MATCH = {
-  // Pridané ID ligy pre tabuľku
+  // Pridané ID ligy pre tabuľku (musí sedieť s ID v leagues.json)
   leagueId: 'premier-league', 
   homeTeam: { name: 'Liverpool', logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/Liverpool_FC.svg/1200px-Liverpool_FC.svg.png', score: 2, scorers: ["Salah 30'", "Gakpo 8'"] },
   awayTeam: { name: 'Manchester City', logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/e/eb/Manchester_City_FC_badge.svg/1200px-Manchester_City_FC_badge.svg.png', score: 1, scorers: ["Haaland 54'"] },
@@ -125,11 +125,15 @@ const TimelineEventRow = ({ event }: { event: any }) => {
 };
 
 // --- HLAVNÝ SCREEN ---
-export default function MatchDetailScreen() {
-  const navigation = useNavigation();
+type MatchDetailScreenProps = {
+  navigation?: { goBack?: () => void };
+};
+
+export default function MatchDetailScreen({ navigation }: MatchDetailScreenProps) {
+  const navigationContext = React.useContext(NavigationContainerRefContext);
   const [activeTab, setActiveTab] = useState('timeline'); 
 
-  // Tabs config - Upravené pre Tabuľku (3. ikona)
+  // Tabs config
   const tabs = [
     { id: 'timeline', icon: 'timer-outline', lib: 'MaterialCommunityIcons' },
     { id: 'lineups', icon: 'shirt-outline', lib: 'Ionicons' }, 
@@ -138,14 +142,14 @@ export default function MatchDetailScreen() {
     { id: 'watch', icon: 'television-play', lib: 'MaterialCommunityIcons' },
   ];
 
-  return (
+  const content = (
     <SafeAreaView className="flex-1 bg-gray-50" edges={['top']}>
       <StatusBar barStyle="dark-content" />
       
       {/* 1. Top Navigation Bar */}
       <View className="flex-row justify-between items-center px-4 py-2 bg-white">
         <TouchableOpacity 
-          onPress={() => navigation.goBack()}
+          onPress={() => navigation?.goBack?.()}
           className="w-10 h-10 bg-gray-50 rounded-full items-center justify-center"
         >
           <Ionicons name="chevron-back" size={24} color="black" />
@@ -200,9 +204,9 @@ export default function MatchDetailScreen() {
           </View>
         )}
 
-        {/* TABLE TAB - Pridané */}
+        {/* TABLE TAB (NOVÉ) */}
         {activeTab === 'table' && (
-          <MatchTableTab 
+          <SimpleTable 
             leagueId={MOCK_MATCH.leagueId} 
             homeTeamName={MOCK_MATCH.homeTeam.name} 
             awayTeamName={MOCK_MATCH.awayTeam.name} 
@@ -235,5 +239,15 @@ export default function MatchDetailScreen() {
       </View>
 
     </SafeAreaView>
+  );
+
+  if (navigationContext) {
+    return content;
+  }
+
+  return (
+    <NavigationContainer>
+      {content}
+    </NavigationContainer>
   );
 }

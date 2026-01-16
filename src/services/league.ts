@@ -10,13 +10,13 @@ export const fetchLeagueStandings = async (leagueId: string): Promise<LeagueTabl
   if (!league) return [];
 
   // Pridáme fallback logá, keďže v JSONe v sekcii "table" chýbajú
-  // (V reálnej appke by si to mal v DB, tu to hardcodneme pre demo)
   const dataWithLogos = (league.table || []).map((item: any) => ({
     ...item,
+    // Hack na pridanie loga, lebo v json chyba
     logo: item.team === 'Arsenal' ? 'https://upload.wikimedia.org/wikipedia/en/thumb/5/53/Arsenal_FC.svg/1200px-Arsenal_FC.svg.png' :
           item.team === 'Manchester City' ? 'https://upload.wikimedia.org/wikipedia/en/thumb/e/eb/Manchester_City_FC_badge.svg/1200px-Manchester_City_FC_badge.svg.png' :
           item.team === 'Liverpool' ? 'https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/Liverpool_FC.svg/1200px-Liverpool_FC.svg.png' :
-          'https://placehold.co/40x40/png' // Fallback
+          'https://placehold.co/40x40/png'
   }));
 
   return dataWithLogos as LeagueTableEntry[];
