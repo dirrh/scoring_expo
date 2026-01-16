@@ -10,7 +10,11 @@ import { FilterModal } from '../components/FilterModal';
 import { fetchNews } from '../services/news'; 
 import { NewsArticle, NewsFilterState } from '../types/news';
 
-export default function NewsScreen() {
+type NewsScreenProps = {
+  navigation?: { navigate?: (route: string, params?: Record<string, unknown>) => void };
+};
+
+export default function NewsScreen({ navigation }: NewsScreenProps) {
   const [articles, setArticles] = useState<NewsArticle[]>([]);
   const [loading, setLoading] = useState(true);
   const [filterVisible, setFilterVisible] = useState(false);
@@ -117,7 +121,10 @@ export default function NewsScreen() {
       </View>
 
       {/* Bottom Tabs - DÔLEŽITÉ: activeTab="News" */}
-      <BottomTabs activeTab="News" />
+      <BottomTabs
+        activeTab="News"
+        onNavigate={(routeName) => navigation?.navigate?.(routeName)}
+      />
 
       {/* Filter Modal */}
       <FilterModal 

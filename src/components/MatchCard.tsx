@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
 
 type Match = {
   period: string;
@@ -15,11 +14,10 @@ type Match = {
 type MatchCardProps = {
   league: string;
   matches: Match[];
+  onMatchPress?: (match: Match, index: number) => void;
 };
 
-export const MatchCard = ({ league, matches }: MatchCardProps) => {
-  const navigation = useNavigation<any>();
-
+export const MatchCard = ({ league, matches, onMatchPress }: MatchCardProps) => {
   return (
     <View className="bg-white rounded-3xl p-4 mb-4 shadow-sm mx-4">
       {/* Hlavicka Ligy */}
@@ -37,9 +35,7 @@ export const MatchCard = ({ league, matches }: MatchCardProps) => {
           key={index} 
           className="flex-row items-center py-2 active:opacity-70"
           onPress={() => {
-            // Navigácia na MatchDetail
-            // Posielame dummy ID, v reálnej appke by si tu poslal match.id
-            navigation.navigate('MatchDetail', { matchId: `match-${index}` });
+            onMatchPress?.(match, index);
           }}
         >
           {/* Čas / Minúta */}

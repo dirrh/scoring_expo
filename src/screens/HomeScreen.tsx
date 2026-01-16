@@ -9,7 +9,11 @@ import { SportSidebar } from '../components/SportsSidebar';
 import { BottomTabs } from '../components/BottomTabs';
 import { fetchFixturesWithTeams } from '../services/fixtures';
 
-export default function HomeScreen() {
+type HomeScreenProps = {
+  navigation?: { navigate?: (route: string, params?: Record<string, unknown>) => void };
+};
+
+export default function HomeScreen({ navigation }: HomeScreenProps) {
   const [leagueMatches, setLeagueMatches] = useState<
     { league: string; matches: Array<{ period: string; time: string; team1: string; score1: string; team2: string; score2: string }> }[]
   >([]);
@@ -148,7 +152,14 @@ export default function HomeScreen() {
               <Text className="px-4 py-2 text-gray-500">No fixtures available.</Text>
             )}
             {leagueMatches.map((item, i) => (
-              <MatchCard key={`${item.league}-${i}`} league={item.league} matches={item.matches} />
+              <MatchCard
+                key={`${item.league}-${i}`}
+                league={item.league}
+                matches={item.matches}
+                onMatchPress={(_, index) => {
+                  navigation?.navigate?.('MatchDetail', { matchId: `${item.league}-${index}` });
+                }}
+              />
             ))}
             {/* Padding na spodku aby BottomTabs nezakrývali obsah */}
             <View className="h-24" />
@@ -168,7 +179,10 @@ export default function HomeScreen() {
       </View>
 
       {/* Explicitne povieme, že sme na 'Home' */}
-      <BottomTabs activeTab="Home" />
+      <BottomTabs
+        activeTab="Home"
+        onNavigate={(routeName) => navigation?.navigate?.(routeName)}
+      />
     </SafeAreaView>
   );
 }

@@ -1,15 +1,13 @@
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
 
 // Definícia props, ktoré komponent prijíma
 interface BottomTabsProps {
   activeTab: 'Home' | 'News' | 'Shop' | 'Betting' | 'Profile';
+  onNavigate?: (routeName: string) => void;
 }
 
-export const BottomTabs = ({ activeTab }: BottomTabsProps) => {
-  const navigation = useNavigation<any>();
-
+export const BottomTabs = ({ activeTab, onNavigate }: BottomTabsProps) => {
   const tabs = [
     { name: 'Shop', icon: 'cart-outline', library: 'Ionicons', routeName: 'Shop' },
     { name: 'News', icon: 'newspaper-outline', library: 'Ionicons', routeName: 'News' }, 
@@ -31,7 +29,7 @@ export const BottomTabs = ({ activeTab }: BottomTabsProps) => {
             onPress={() => {
                 // Preklikneme sa len ak nie sme na aktívnom tabe
                 if (!isActive) {
-                    navigation.navigate(tab.routeName);
+                    onNavigate?.(tab.routeName);
                 }
             }}
           >
