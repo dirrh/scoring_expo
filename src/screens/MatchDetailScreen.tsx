@@ -1,9 +1,8 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
-import { NavigationContainer, NavigationContainerRefContext } from '@react-navigation/native';
 
 // Import NOVÉHO komponentu tabuľky (SimpleTable)
 import { SimpleTable } from '../components/SimpleTable';
@@ -130,7 +129,6 @@ type MatchDetailScreenProps = {
 };
 
 export default function MatchDetailScreen({ navigation }: MatchDetailScreenProps) {
-  const navigationContext = React.useContext(NavigationContainerRefContext);
   const [activeTab, setActiveTab] = useState('timeline'); 
 
   // Tabs config
@@ -142,7 +140,7 @@ export default function MatchDetailScreen({ navigation }: MatchDetailScreenProps
     { id: 'watch', icon: 'television-play', lib: 'MaterialCommunityIcons' },
   ];
 
-  const content = (
+  return (
     <SafeAreaView className="flex-1 bg-gray-50" edges={['top']}>
       <StatusBar barStyle="dark-content" />
       
@@ -206,11 +204,13 @@ export default function MatchDetailScreen({ navigation }: MatchDetailScreenProps
 
         {/* TABLE TAB (NOVÉ) */}
         {activeTab === 'table' && (
-          <SimpleTable 
-            leagueId={MOCK_MATCH.leagueId} 
-            homeTeamName={MOCK_MATCH.homeTeam.name} 
-            awayTeamName={MOCK_MATCH.awayTeam.name} 
-          />
+          <TableErrorBoundary>
+            <SimpleTable 
+              leagueId={MOCK_MATCH.leagueId} 
+              homeTeamName={MOCK_MATCH.homeTeam.name} 
+              awayTeamName={MOCK_MATCH.awayTeam.name} 
+            />
+          </TableErrorBoundary>
         )}
         
         {/* Placeholder pre ostatné taby */}
@@ -240,14 +240,31 @@ export default function MatchDetailScreen({ navigation }: MatchDetailScreenProps
 
     </SafeAreaView>
   );
+}
 
-  if (navigationContext) {
-    return content;
+class TableErrorBoundary extends React.Component<
+  { children: React.ReactNode },
+  { error?: Error }
+> {
+  state: { error?: Error } = {};
+
+  static getDerivedStateFromError(error: Error) {
+    return { error };
   }
 
-  return (
-    <NavigationContainer>
-      {content}
-    </NavigationContainer>
-  );
+  componentDidCatch(error: Error) {
+    console.error("Table tab error:", error?.stack ?? error);
+  }
+
+  render() {
+    if (this.state.error) {
+      return (
+        <View className="py-6 px-4">
+          <Text className="text-red-500 font-bold">Table failed to render.</Text>
+          <Text className="text-red-400 text-xs mt-2">{this.state.error.message}</Text>
+        </View>
+      );
+    }
+    return this.props.children;
+  }
 }
