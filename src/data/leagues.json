@@ -1,0 +1,323 @@
+{
+  "leagues": [
+    {
+      "id": "premier-league",
+      "name": "Premier League",
+      "sportId": "football",
+      "logo": "https://picsum.photos/100/100",
+      "country": "England",
+      "founded": 1992,
+      "teams": 20,
+      "currentSeason": "2024-25",
+      "website": "https://www.premierleague.com",
+      "isFavorite": true,
+      "table": [
+        {
+          "position": 1,
+          "team": "Arsenal",
+          "played": 20,
+          "won": 16,
+          "drawn": 2,
+          "lost": 2,
+          "goalsFor": 48,
+          "goalsAgainst": 15,
+          "goalDifference": 33,
+          "points": 50,
+          "isFavorite": true
+        },
+        {
+          "position": 2,
+          "team": "Manchester City",
+          "played": 20,
+          "won": 15,
+          "drawn": 3,
+          "lost": 2,
+          "goalsFor": 52,
+          "goalsAgainst": 18,
+          "goalDifference": 34,
+          "points": 48,
+          "isFavorite": true
+        },
+        {
+          "position": 3,
+          "team": "Liverpool",
+          "played": 20,
+          "won": 14,
+          "drawn": 4,
+          "lost": 2,
+          "goalsFor": 45,
+          "goalsAgainst": 20,
+          "goalDifference": 25,
+          "points": 46,
+          "isFavorite": false
+        }
+      ],
+      "knockout": {
+        "type": "playoffs",
+        "rounds": [
+          {
+            "round": "Quarterfinals",
+            "matches": [
+              {
+                "id": "ko-1",
+                "team1": "Arsenal",
+                "team2": "Chelsea",
+                "date": "2024-11-15",
+                "time": "15:00",
+                "status": "upcoming"
+              },
+              {
+                "id": "ko-2",
+                "team1": "Manchester City",
+                "team2": "Tottenham",
+                "date": "2024-11-15",
+                "time": "17:30",
+                "status": "upcoming"
+              }
+            ]
+          }
+        ]
+      },
+      "matches": [
+        {
+          "id": "match-1",
+          "date": "2024-10-25",
+          "time": "15:00",
+          "homeTeam": "Arsenal",
+          "awayTeam": "Crystal Palace",
+          "status": "upcoming"
+        },
+        {
+          "id": "match-2",
+          "date": "2024-10-25",
+          "time": "17:30",
+          "homeTeam": "Manchester City",
+          "awayTeam": "Manchester United",
+          "status": "upcoming"
+        },
+        {
+          "id": "match-3",
+          "date": "2024-10-18",
+          "time": "15:00",
+          "homeTeam": "Arsenal",
+          "awayTeam": "Newcastle",
+          "score": "2-1",
+          "status": "finished"
+        }
+      ],
+      "stats": {
+        "season": "2024-25",
+        "totalGoals": 450,
+        "avgGoalsPerGame": 2.5,
+        "totalMatches": 180,
+        "completedMatches": 120,
+        "upcomingMatches": 60,
+        "topScorer": {
+          "name": "Erling Haaland",
+          "team": "Manchester City",
+          "goals": 18
+        },
+        "mostAssists": {
+          "name": "Kevin De Bruyne",
+          "team": "Manchester City",
+          "assists": 12
+        }
+      },
+      "transfers": [
+        {
+          "id": "t1",
+          "date": "2024-09-01",
+          "player": "Mac Allister",
+          "from": "Brighton",
+          "to": "Liverpool",
+          "fee": "€42M"
+        },
+        {
+          "id": "t2",
+          "date": "2024-08-20",
+          "player": "Rice",
+          "from": "West Ham",
+          "to": "Arsenal",
+          "fee": "€105M"
+        }
+      ],
+      "seasons": [
+        {
+          "season": "2023-24",
+          "champion": "Manchester City",
+          "runnerUp": "Arsenal",
+          "topScorer": "Erling Haaland",
+          "points": 91
+        },
+        {
+          "season": "2022-23",
+          "champion": "Manchester City",
+          "runnerUp": "Arsenal",
+          "topScorer": "Erling Haaland",
+          "points": 89
+        },
+        {
+          "season": "2021-22",
+          "champion": "Manchester City",
+          "runnerUp": "Liverpool",
+          "topScorer": "Mohamed Salah",
+          "points": 93
+        }
+      ],
+      "news": [
+        {
+          "id": "n1",
+          "title": "Premier League title race heats up",
+          "date": "2024-10-20",
+          "category": "Breaking"
+        },
+        {
+          "id": "n2",
+          "title": "Record-breaking transfer window",
+          "date": "2024-10-18",
+          "category": "Analysis"
+        }
+      ],
+      "chat": {
+        "groupId": "premier-league-fans",
+        "memberCount": 3500,
+        "isLive": true
+      }
+    },
+    {
+      "id": "tipos-sbl",
+      "name": "Tipos SBL",
+      "sportId": "basketball",
+      "logo": "https://picsum.photos/100/100",
+      "country": "Slovakia",
+      "founded": 1993,
+      "teams": 12,
+      "currentSeason": "2024-25",
+      "website": "https://www.sbl.sk",
+      "isFavorite": false,
+      "table": [
+        {
+          "position": 1,
+          "team": "BC Prievidza",
+          "played": 15,
+          "won": 12,
+          "drawn": 1,
+          "lost": 2,
+          "goalsFor": 850,
+          "goalsAgainst": 720,
+          "goalDifference": 130,
+          "points": 37,
+          "isFavorite": true
+        },
+        {
+          "position": 2,
+          "team": "Kosice Wolves",
+          "played": 15,
+          "won": 10,
+          "drawn": 2,
+          "lost": 3,
+          "goalsFor": 820,
+          "goalsAgainst": 750,
+          "goalDifference": 70,
+          "points": 32,
+          "isFavorite": false
+        }
+      ],
+      "knockout": {
+        "type": "playoffs",
+        "rounds": [
+          {
+            "round": "Semifinals",
+            "matches": [
+              {
+                "id": "ko-3",
+                "team1": "BC Prievidza",
+                "team2": "Kosice Wolves",
+                "date": "2024-11-20",
+                "time": "18:00",
+                "status": "upcoming"
+              }
+            ]
+          }
+        ]
+      },
+      "matches": [
+        {
+          "id": "match-4",
+          "date": "2024-10-22",
+          "time": "18:00",
+          "homeTeam": "BC Prievidza",
+          "awayTeam": "Zilina",
+          "status": "upcoming"
+        },
+        {
+          "id": "match-5",
+          "date": "2024-10-16",
+          "time": "18:00",
+          "homeTeam": "BC Prievidza",
+          "awayTeam": "Kosice Wolves",
+          "score": "58-49",
+          "status": "live"
+        }
+      ],
+      "stats": {
+        "season": "2024-25",
+        "totalGoals": 1200,
+        "avgGoalsPerGame": 56.0,
+        "totalMatches": 90,
+        "completedMatches": 60,
+        "upcomingMatches": 30,
+        "topScorer": {
+          "name": "Johnson",
+          "team": "BC Prievidza",
+          "goals": 245
+        },
+        "mostAssists": {
+          "name": "Williams",
+          "team": "BC Prievidza",
+          "assists": 180
+        }
+      },
+      "transfers": [
+        {
+          "id": "t3",
+          "date": "2024-07-01",
+          "player": "Johnson",
+          "from": "Free Agent",
+          "to": "BC Prievidza",
+          "fee": "Free"
+        }
+      ],
+      "seasons": [
+        {
+          "season": "2023-24",
+          "champion": "BC Prievidza",
+          "runnerUp": "Kosice Wolves",
+          "topScorer": "Johnson",
+          "points": 35
+        },
+        {
+          "season": "2022-23",
+          "champion": "Kosice Wolves",
+          "runnerUp": "BC Prievidza",
+          "topScorer": "Smith",
+          "points": 38
+        }
+      ],
+      "news": [
+        {
+          "id": "n3",
+          "title": "BC Prievidza leads Tipos SBL",
+          "date": "2024-10-17",
+          "category": "Match Report"
+        }
+      ],
+      "chat": {
+        "groupId": "tipos-sbl-fans",
+        "memberCount": 850,
+        "isLive": false
+      }
+    }
+  ]
+}
+

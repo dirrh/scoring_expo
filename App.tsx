@@ -9,6 +9,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import HomeScreen from './src/screens/HomeScreen';
 import NewsScreen from './src/screens/NewsScreen';
+import MatchDetailScreen from './src/screens/MatchDetailScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -32,6 +33,8 @@ export default function App() {
             <Stack.Screen name="Shop" component={HomeScreen} />
             <Stack.Screen name="Betting" component={HomeScreen} />
             <Stack.Screen name="Profile" component={HomeScreen} />
+
+            <Stack.Screen name="MatchDetail" component={MatchDetailScreen} />
             
           </Stack.Navigator>
         </NavigationContainer>
