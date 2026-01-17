@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 type Match = {
+  fixtureId: number;
   period: string;
   time: string;
   team1: string;
@@ -32,7 +33,7 @@ export const MatchCard = ({ league, matches, onMatchPress }: MatchCardProps) => 
       {/* Zoznam zápasov */}
       {matches.map((match, index) => (
         <TouchableOpacity 
-          key={index} 
+          key={`${match.fixtureId}-${index}`} 
           className="flex-row items-center py-2 active:opacity-70"
           onPress={() => {
             onMatchPress?.(match, index);

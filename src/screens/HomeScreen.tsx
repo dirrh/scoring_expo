@@ -15,7 +15,18 @@ type HomeScreenProps = {
 
 export default function HomeScreen({ navigation }: HomeScreenProps) {
   const [leagueMatches, setLeagueMatches] = useState<
-    { league: string; matches: Array<{ period: string; time: string; team1: string; score1: string; team2: string; score2: string }> }[]
+    {
+      league: string;
+      matches: Array<{
+        fixtureId: number;
+        period: string;
+        time: string;
+        team1: string;
+        score1: string;
+        team2: string;
+        score2: string;
+      }>;
+    }[]
   >([]);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -43,7 +54,18 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
         const fixtures = await fetchFixturesWithTeams(selectedDate);
         if (!isActive) return;
 
-        const grouped = new Map<string, Array<{ period: string; time: string; team1: string; score1: string; team2: string; score2: string }>>();
+        const grouped = new Map<
+          string,
+          Array<{
+            fixtureId: number;
+            period: string;
+            time: string;
+            team1: string;
+            score1: string;
+            team2: string;
+            score2: string;
+          }>
+        >();
 
         for (const fixture of fixtures) {
           const leagueName = fixture.league?.name ?? "Unknown League";
@@ -58,6 +80,7 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
           const score2 = fixture.goals_away ?? "-";
 
           const match = {
+            fixtureId: fixture.id,
             period,
             time,
             team1,
@@ -156,8 +179,8 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
                 key={`${item.league}-${i}`}
                 league={item.league}
                 matches={item.matches}
-                onMatchPress={(_, index) => {
-                  navigation?.navigate?.('MatchDetail', { matchId: `${item.league}-${index}` });
+                onMatchPress={(match) => {
+                  navigation?.navigate?.('MatchDetail', { fixtureId: match.fixtureId });
                 }}
               />
             ))}
