@@ -13,6 +13,19 @@ import MatchDetailScreen from './src/screens/MatchDetailScreen';
 
 const Stack = createNativeStackNavigator();
 
+if (global.ErrorUtils && !(global as any).__globalErrorHandlerSet) {
+  const prevHandler = global.ErrorUtils.getGlobalHandler?.();
+  global.ErrorUtils.setGlobalHandler((error, isFatal) => {
+    try {
+      console.error("GlobalError:", error?.stack ?? error);
+    } catch {}
+    if (prevHandler) {
+      prevHandler(error, isFatal);
+    }
+  });
+  (global as any).__globalErrorHandlerSet = true;
+}
+
 export default function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>

@@ -1,270 +1,279 @@
-import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, StatusBar } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { Image } from 'expo-image';
+import React, { useMemo, useState } from "react";
+import { View, Text, ScrollView, Pressable, StatusBar, StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Image } from "expo-image";
 
-// Import NOVÉHO komponentu tabuľky (SimpleTable)
-import { SimpleTable } from '../components/SimpleTable';
+import { SimpleTable } from "../components/SimpleTable";
+import { MatchTimelineTab } from "../components/MatchTimelineTab";
+import { MatchLineupsTab } from "../components/MatchLineupsTab";
+import { MatchStatsTab } from "../components/MatchStatsTab";
+import { MatchWatchTab } from "../components/MatchWatchTab";
 
-// --- MOCK DÁTA ---
-const MOCK_MATCH = {
-  // Pridané ID ligy pre tabuľku (musí sedieť s ID v leagues.json)
-  leagueId: 'premier-league', 
-  homeTeam: { name: 'Liverpool', logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/Liverpool_FC.svg/1200px-Liverpool_FC.svg.png', score: 2, scorers: ["Salah 30'", "Gakpo 8'"] },
-  awayTeam: { name: 'Manchester City', logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/e/eb/Manchester_City_FC_badge.svg/1200px-Manchester_City_FC_badge.svg.png', score: 1, scorers: ["Haaland 54'"] },
+type MatchDetailData = {
+  leagueId?: string;
+  homeTeam: { name: string; logo?: string | null; score: number; scorers: string[] };
+  awayTeam: { name: string; logo?: string | null; score: number; scorers: string[] };
+  time: string;
+  period: string;
+  timeline: Array<{ id: number; minute: number; type: string; team: "home" | "away"; player: string; score?: string }>;
+};
+
+const MOCK_MATCH: MatchDetailData = {
+  leagueId: "premier-league",
+  homeTeam: {
+    name: "Liverpool",
+    logo: "https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/Liverpool_FC.svg/1200px-Liverpool_FC.svg.png",
+    score: 2,
+    scorers: ["Salah 30'", "Gakpo 8'"],
+  },
+  awayTeam: {
+    name: "Manchester City",
+    logo: "https://upload.wikimedia.org/wikipedia/en/thumb/e/eb/Manchester_City_FC_badge.svg/1200px-Manchester_City_FC_badge.svg.png",
+    score: 1,
+    scorers: ["Haaland 54'"],
+  },
   time: "67'",
   period: "2ND HALF",
   timeline: [
-    { id: 1, minute: 54, type: 'goal', team: 'away', player: 'E. Haaland', score: '2:1' },
-    { id: 2, minute: 33, type: 'yellow-card', team: 'away', player: 'C. Bradley' },
-    { id: 3, minute: 30, type: 'goal', team: 'home', player: 'M. Salah', score: '2:0' },
-    { id: 4, minute: 24, type: 'red-card', team: 'home', player: 'D. Szoboszlai' },
-    { id: 5, minute: 18, type: 'yellow-card', team: 'away', player: 'N. O\'Reilly' },
-    { id: 6, minute: 8, type: 'goal', team: 'home', player: 'C. Gakpo', score: '1:0' },
-  ]
+    { id: 1, minute: 54, type: "goal", team: "away", player: "E. Haaland", score: "2:1" },
+    { id: 2, minute: 33, type: "yellow-card", team: "away", player: "C. Bradley" },
+    { id: 3, minute: 30, type: "goal", team: "home", player: "M. Salah", score: "2:0" },
+    { id: 4, minute: 24, type: "red-card", team: "home", player: "D. Szoboszlai" },
+    { id: 5, minute: 18, type: "yellow-card", team: "away", player: "N. O'Reilly" },
+    { id: 6, minute: 8, type: "goal", team: "home", player: "C. Gakpo", score: "1:0" },
+  ],
 };
 
-// --- KOMPONENT: MATCH HEADER (SKÓRE) ---
-const MatchHeaderInfo = ({ data }: { data: typeof MOCK_MATCH }) => (
-  <View className="px-6 py-6 bg-white rounded-b-[30px] shadow-sm z-10">
-    <View className="flex-row justify-between items-start">
-      
-      {/* Home Team */}
-      <View className="items-center w-1/3">
-        <View className="relative">
-          <Ionicons name="star-outline" size={20} color="black" style={{ position: 'absolute', top: 0, left: -24 }} />
-          <Image source={{ uri: data.homeTeam.logo }} style={{ width: 60, height: 60 }} contentFit="contain" />
-        </View>
-        <Text className="font-bold text-lg mt-2 text-center uppercase">{data.homeTeam.name}</Text>
-        <View className="mt-2">
-          {data.homeTeam.scorers.map((s, i) => (
-            <Text key={i} className="text-gray-500 text-xs text-center">{s}</Text>
-          ))}
-        </View>
-      </View>
+const TABS = [
+  { id: "timeline", icon: "timer-outline", lib: "MaterialCommunityIcons" },
+  { id: "lineups", icon: "shirt-outline", lib: "Ionicons" },
+  { id: "table", icon: "table-large", lib: "MaterialCommunityIcons" },
+  { id: "stats", icon: "poll", lib: "MaterialCommunityIcons" },
+  { id: "watch", icon: "television-play", lib: "MaterialCommunityIcons" },
+] as const;
 
-      {/* Score Center */}
-      <View className="items-center mt-2">
-        <Text className="text-5xl font-bold text-red-600 tracking-widest">
-          {data.homeTeam.score} - {data.awayTeam.score}
-        </Text>
-        <Text className="text-red-500 font-bold text-xs mt-1 uppercase tracking-wide">
-          {data.period} • {data.time}
-        </Text>
-        <View className="mt-4">
-           <Ionicons name="football-outline" size={24} color="#9ca3af" />
-        </View>
-      </View>
+type TabId = (typeof TABS)[number]["id"];
 
-      {/* Away Team */}
-      <View className="items-center w-1/3">
-        <View className="relative">
-          <Image source={{ uri: data.awayTeam.logo }} style={{ width: 60, height: 60 }} contentFit="contain" />
-          <Ionicons name="star" size={16} color="#fbbf24" style={{ position: 'absolute', top: 0, right: -20 }} />
-        </View>
-        <Text className="font-bold text-lg mt-2 text-center uppercase text-gray-900">
-          Manchester{'\n'}City
-        </Text>
-        <View className="mt-2">
-          {data.awayTeam.scorers.map((s, i) => (
-            <Text key={i} className="text-gray-500 text-xs text-center">{s}</Text>
-          ))}
-        </View>
-      </View>
-    </View>
-  </View>
-);
-
-// --- KOMPONENT: TIMELINE ROW ---
-const TimelineEventRow = ({ event }: { event: any }) => {
-  const isHome = event.team === 'home';
-  
-  const getIcon = () => {
-    switch (event.type) {
-      case 'goal': return <Ionicons name="football" size={16} color="black" />;
-      case 'yellow-card': return <View className="w-3 h-4 bg-yellow-400 rounded-sm" />;
-      case 'red-card': return <View className="w-3 h-4 bg-red-600 rounded-sm" />;
-      default: return <View className="w-3 h-3 bg-gray-400 rounded-full" />;
-    }
-  };
+export default function MatchDetailScreen() {
+  const [activeTab, setActiveTab] = useState<TabId>("timeline");
+  const match = useMemo(() => MOCK_MATCH, []);
 
   return (
-    <View className="flex-row items-center w-full mb-6">
-      {/* Home Side (Left) */}
-      <View className="flex-1 flex-row justify-end items-center pr-4">
-        {isHome && (
-          <>
-            <Ionicons name="arrow-redo" size={14} color="black" style={{ marginRight: 8 }} />
-            <Text className="font-bold text-gray-900 mr-2">{event.player}</Text>
-            {event.score && <Text className="font-bold text-green-500 mr-2">{event.score}</Text>}
-            {getIcon()}
-          </>
-        )}
-      </View>
-
-      {/* Center Time Bubble */}
-      <View className="w-12 h-8 bg-black rounded-full items-center justify-center z-10 border-4 border-gray-50">
-        <Text className="text-white font-bold text-xs">{event.minute}'</Text>
-      </View>
-
-      {/* Away Side (Right) */}
-      <View className="flex-1 flex-row justify-start items-center pl-4">
-        {!isHome && (
-          <>
-            {getIcon()}
-            {event.score && <Text className="font-bold text-green-500 ml-2">{event.score}</Text>}
-            <Text className="font-bold text-gray-900 ml-2">{event.player}</Text>
-            <Ionicons name="arrow-undo" size={14} color="black" style={{ marginLeft: 8 }} />
-          </>
-        )}
-      </View>
-    </View>
-  );
-};
-
-// --- HLAVNÝ SCREEN ---
-type MatchDetailScreenProps = {
-  navigation?: { goBack?: () => void };
-};
-
-export default function MatchDetailScreen({ navigation }: MatchDetailScreenProps) {
-  const [activeTab, setActiveTab] = useState('timeline'); 
-
-  // Tabs config
-  const tabs = [
-    { id: 'timeline', icon: 'timer-outline', lib: 'MaterialCommunityIcons' },
-    { id: 'lineups', icon: 'shirt-outline', lib: 'Ionicons' }, 
-    { id: 'table', icon: 'table-large', lib: 'MaterialCommunityIcons' }, // TOTO JE ONO
-    { id: 'stats', icon: 'poll', lib: 'MaterialCommunityIcons' },
-    { id: 'watch', icon: 'television-play', lib: 'MaterialCommunityIcons' },
-  ];
-
-  return (
-    <SafeAreaView className="flex-1 bg-gray-50" edges={['top']}>
+    <SafeAreaView style={styles.container} edges={["top"]}>
       <StatusBar barStyle="dark-content" />
-      
-      {/* 1. Top Navigation Bar */}
-      <View className="flex-row justify-between items-center px-4 py-2 bg-white">
-        <TouchableOpacity 
-          onPress={() => navigation?.goBack?.()}
-          className="w-10 h-10 bg-gray-50 rounded-full items-center justify-center"
-        >
-          <Ionicons name="chevron-back" size={24} color="black" />
-        </TouchableOpacity>
-        
-        <View className="flex-row gap-3">
-          <TouchableOpacity className="w-10 h-10 bg-gray-50 rounded-full items-center justify-center">
-            <Ionicons name="star-outline" size={20} color="black" />
-          </TouchableOpacity>
-          <TouchableOpacity className="w-10 h-10 bg-gray-50 rounded-full items-center justify-center">
-            <Ionicons name="share-social-outline" size={20} color="black" />
-          </TouchableOpacity>
-        </View>
-      </View>
 
-      {/* 2. Match Score Header */}
-      <MatchHeaderInfo data={MOCK_MATCH} />
+      <HeaderBar />
+      <MatchHeaderInfo data={match} />
+      <TabBar activeTab={activeTab} onChange={setActiveTab} />
 
-      {/* 3. Secondary Tabs Navigation */}
-      <View className="flex-row justify-between px-6 py-4 bg-gray-50">
-        {tabs.map((tab) => {
-          const isActive = activeTab === tab.id;
-          return (
-            <TouchableOpacity 
-              key={tab.id}
-              onPress={() => setActiveTab(tab.id)}
-              className={`w-12 h-12 rounded-xl items-center justify-center ${isActive ? 'bg-white shadow-sm' : 'bg-transparent'}`}
-            >
-              {tab.lib === 'Ionicons' ? (
-                <Ionicons name={tab.icon as any} size={24} color={isActive ? 'black' : '#9ca3af'} />
-              ) : (
-                <MaterialCommunityIcons name={tab.icon as any} size={24} color={isActive ? 'black' : '#9ca3af'} />
-              )}
-            </TouchableOpacity>
-          );
-        })}
-      </View>
-
-      {/* 4. Content Area */}
-      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        
-        {/* TIMELINE TAB */}
-        {activeTab === 'timeline' && (
-          <View className="py-4 relative min-h-[400px]">
-            {/* Vertical Center Line */}
-            <View className="absolute top-0 bottom-0 left-1/2 w-[2px] bg-gray-200 -ml-[1px]" />
-            
-            {/* Events */}
-            {MOCK_MATCH.timeline.map((event) => (
-              <TimelineEventRow key={event.id} event={event} />
-            ))}
-          </View>
+      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+        {activeTab === "timeline" && (
+          <MatchTimelineTab loading={false} errorMessage={null} events={match.timeline} />
         )}
-
-        {/* TABLE TAB (NOVÉ) */}
-        {activeTab === 'table' && (
-          <TableErrorBoundary>
-            <SimpleTable 
-              leagueId={MOCK_MATCH.leagueId} 
-              homeTeamName={MOCK_MATCH.homeTeam.name} 
-              awayTeamName={MOCK_MATCH.awayTeam.name} 
-            />
-          </TableErrorBoundary>
+        {activeTab === "lineups" && <MatchLineupsTab />}
+        {activeTab === "table" && (
+          <SimpleTable
+            leagueId={match.leagueId ?? "premier-league"}
+            homeTeamName={match.homeTeam.name}
+            awayTeamName={match.awayTeam.name}
+          />
         )}
-        
-        {/* Placeholder pre ostatné taby */}
-        {activeTab !== 'timeline' && activeTab !== 'table' && (
-          <View className="items-center justify-center py-20">
-            <Text className="text-gray-400">Content for {activeTab} coming soon...</Text>
-          </View>
-        )}
+        {activeTab === "stats" && <MatchStatsTab />}
+        {activeTab === "watch" && <MatchWatchTab />}
       </ScrollView>
 
-      {/* 5. Floating Action Buttons (FABs) */}
-      <View className="absolute bottom-8 right-6 gap-4">
-        <TouchableOpacity className="w-14 h-14 bg-purple-600 rounded-full items-center justify-center shadow-lg shadow-purple-300">
-          <Ionicons name="notifications" size={24} color="white" />
-          <View className="absolute top-0 right-0 bg-red-500 w-5 h-5 rounded-full items-center justify-center border-2 border-white">
-            <Text className="text-[10px] text-white font-bold">3</Text>
-          </View>
-        </TouchableOpacity>
-        
-        <TouchableOpacity className="w-14 h-14 bg-blue-500 rounded-full items-center justify-center shadow-lg shadow-blue-300">
-          <Ionicons name="chatbubble-ellipses" size={24} color="white" />
-          <View className="absolute top-0 right-0 bg-red-500 w-5 h-5 rounded-full items-center justify-center border-2 border-white">
-            <Text className="text-[10px] text-white font-bold">1</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-
+      <FloatingButtons />
     </SafeAreaView>
   );
 }
 
-class TableErrorBoundary extends React.Component<
-  { children: React.ReactNode },
-  { error?: Error }
-> {
-  state: { error?: Error } = {};
-
-  static getDerivedStateFromError(error: Error) {
-    return { error };
-  }
-
-  componentDidCatch(error: Error) {
-    console.error("Table tab error:", error?.stack ?? error);
-  }
-
-  render() {
-    if (this.state.error) {
-      return (
-        <View className="py-6 px-4">
-          <Text className="text-red-500 font-bold">Table failed to render.</Text>
-          <Text className="text-red-400 text-xs mt-2">{this.state.error.message}</Text>
-        </View>
-      );
-    }
-    return this.props.children;
-  }
+function HeaderBar() {
+  return (
+    <View style={styles.headerBar}>
+      <Pressable style={styles.circleButton}>
+        <Ionicons name="chevron-back" size={24} color="black" />
+      </Pressable>
+      <View style={styles.headerActions}>
+        <Pressable style={styles.circleButton}>
+          <Ionicons name="star-outline" size={20} color="black" />
+        </Pressable>
+        <Pressable style={styles.circleButton}>
+          <Ionicons name="share-social-outline" size={20} color="black" />
+        </Pressable>
+      </View>
+    </View>
+  );
 }
+
+function TabBar({ activeTab, onChange }: { activeTab: TabId; onChange: (id: TabId) => void }) {
+  return (
+    <View style={styles.tabBar}>
+      {TABS.map((tab) => {
+        const isActive = activeTab === tab.id;
+        return (
+          <Pressable
+            key={tab.id}
+            onPress={() => onChange(tab.id)}
+            style={[styles.tabButton, isActive && styles.tabButtonActive]}
+          >
+            {tab.lib === "Ionicons" ? (
+              <Ionicons name={tab.icon as any} size={24} color={isActive ? "#000" : "#9ca3af"} />
+            ) : (
+              <MaterialCommunityIcons name={tab.icon as any} size={24} color={isActive ? "#000" : "#9ca3af"} />
+            )}
+          </Pressable>
+        );
+      })}
+    </View>
+  );
+}
+
+function FloatingButtons() {
+  return (
+    <View style={styles.fabContainer}>
+      <Pressable style={[styles.fab, styles.fabPurple]}>
+        <Ionicons name="notifications" size={24} color="white" />
+        <View style={styles.fabBadge}>
+          <Text style={styles.fabBadgeText}>3</Text>
+        </View>
+      </Pressable>
+
+      <Pressable style={[styles.fab, styles.fabBlue]}>
+        <Ionicons name="chatbubble-ellipses" size={24} color="white" />
+        <View style={styles.fabBadge}>
+          <Text style={styles.fabBadgeText}>1</Text>
+        </View>
+      </Pressable>
+    </View>
+  );
+}
+
+function MatchHeaderInfo({ data }: { data: MatchDetailData }) {
+  return (
+    <View style={styles.scoreCard}>
+      <View style={styles.scoreRow}>
+        <View style={styles.teamColumn}>
+          <View style={styles.teamLogoWrap}>
+            <Ionicons name="star-outline" size={20} color="black" style={styles.teamStarLeft} />
+            {data.homeTeam.logo ? (
+              <Image source={{ uri: data.homeTeam.logo }} style={styles.teamLogo} contentFit="contain" />
+            ) : null}
+          </View>
+          <Text style={styles.teamName}>{data.homeTeam.name}</Text>
+          {data.homeTeam.scorers.map((s, i) => (
+            <Text key={i} style={styles.scorerText}>{s}</Text>
+          ))}
+        </View>
+
+        <View style={styles.scoreCenter}>
+          <Text style={styles.scoreText}>
+            {data.homeTeam.score} - {data.awayTeam.score}
+          </Text>
+          <Text style={styles.periodText}>{data.period} • {data.time}</Text>
+          <Ionicons name="football-outline" size={24} color="#9ca3af" style={{ marginTop: 12 }} />
+        </View>
+
+        <View style={styles.teamColumn}>
+          <View style={styles.teamLogoWrap}>
+            {data.awayTeam.logo ? (
+              <Image source={{ uri: data.awayTeam.logo }} style={styles.teamLogo} contentFit="contain" />
+            ) : null}
+            <Ionicons name="star" size={16} color="#fbbf24" style={styles.teamStarRight} />
+          </View>
+          <Text style={styles.teamName}>{data.awayTeam.name}</Text>
+          {data.awayTeam.scorers.map((s, i) => (
+            <Text key={i} style={styles.scorerText}>{s}</Text>
+          ))}
+        </View>
+      </View>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: "#F3F4F6" },
+  headerBar: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    backgroundColor: "#FFFFFF",
+  },
+  headerActions: { flexDirection: "row", gap: 12 },
+  circleButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "#F9FAFB",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  scoreCard: {
+    backgroundColor: "#FFFFFF",
+    paddingHorizontal: 24,
+    paddingVertical: 24,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
+  },
+  scoreRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start" },
+  teamColumn: { width: "33%", alignItems: "center" },
+  teamLogoWrap: { position: "relative" },
+  teamLogo: { width: 60, height: 60 },
+  teamStarLeft: { position: "absolute", top: 0, left: -24 },
+  teamStarRight: { position: "absolute", top: 0, right: -20 },
+  teamName: { fontWeight: "700", fontSize: 16, marginTop: 8, textAlign: "center" },
+  scorerText: { fontSize: 12, color: "#6B7280", textAlign: "center" },
+  scoreCenter: { alignItems: "center", marginTop: 8 },
+  scoreText: { fontSize: 36, fontWeight: "700", color: "#DC2626" },
+  periodText: { fontSize: 12, fontWeight: "700", color: "#EF4444", marginTop: 4 },
+  tabBar: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingHorizontal: 24,
+    paddingVertical: 16,
+    backgroundColor: "#F3F4F6",
+  },
+  tabButton: {
+    width: 48,
+    height: 48,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  tabButtonActive: {
+    backgroundColor: "#FFFFFF",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.08,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  content: { flex: 1 },
+  fabContainer: { position: "absolute", right: 24, bottom: 32, gap: 16 },
+  fab: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    alignItems: "center",
+    justifyContent: "center",
+    elevation: 5,
+  },
+  fabPurple: { backgroundColor: "#9333ea" },
+  fabBlue: { backgroundColor: "#3b82f6" },
+  fabBadge: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: "#EF4444",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 2,
+    borderColor: "#FFFFFF",
+  },
+  fabBadgeText: { fontSize: 10, color: "#FFFFFF", fontWeight: "700" },
+});
