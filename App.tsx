@@ -33,7 +33,7 @@ export default function App() {
       <SafeAreaProvider>
         <NavigationContainer>
           <Stack.Navigator 
-            initialRouteName="News" // Pre testovanie začíname na News
+            initialRouteName="Home"
             screenOptions={{ 
               headerShown: false,
               animation: 'none'
