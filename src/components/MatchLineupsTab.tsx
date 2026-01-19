@@ -3,8 +3,8 @@ import { View, Text } from "react-native";
 
 export function MatchLineupsTab() {
   return (
-    <View className="items-center justify-center py-20">
-      <Text className="text-gray-400">Lineups coming soon...</Text>
+    <View style={{ alignItems: "center", justifyContent: "center", paddingVertical: 80 }}>
+      <Text style={{ color: "#9CA3AF" }}>Lineups coming soon...</Text>
     </View>
   );
 }

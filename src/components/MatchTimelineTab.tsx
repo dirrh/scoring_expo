@@ -24,31 +24,41 @@ export function MatchTimelineTab({
 }: MatchTimelineTabProps) {
   if (loading) {
     return (
-      <View className="items-center py-8">
-        <Text className="text-gray-400">Loading timeline...</Text>
+      <View style={{ alignItems: "center", paddingVertical: 32 }}>
+        <Text style={{ color: "#9CA3AF" }}>Loading timeline...</Text>
       </View>
     );
   }
 
   if (errorMessage) {
     return (
-      <View className="items-center py-8">
-        <Text className="text-red-500">{errorMessage}</Text>
+      <View style={{ alignItems: "center", paddingVertical: 32 }}>
+        <Text style={{ color: "#EF4444" }}>{errorMessage}</Text>
       </View>
     );
   }
 
   if (!events.length) {
     return (
-      <View className="items-center py-8">
-        <Text className="text-gray-400">No events for this match yet.</Text>
+      <View style={{ alignItems: "center", paddingVertical: 32 }}>
+        <Text style={{ color: "#9CA3AF" }}>No events for this match yet.</Text>
       </View>
     );
   }
 
   return (
-    <View className="py-4 relative min-h-[400px]">
-      <View className="absolute top-0 bottom-0 left-1/2 w-[2px] bg-gray-200 -ml-[1px]" />
+    <View style={{ paddingVertical: 16, minHeight: 400 }}>
+      <View
+        style={{
+          position: "absolute",
+          top: 0,
+          bottom: 0,
+          left: "50%",
+          width: 2,
+          marginLeft: -1,
+          backgroundColor: "#E5E7EB",
+        }}
+      />
       {events.map((event) => (
         <TimelineEventRow key={event.id} event={event} />
       ))}
