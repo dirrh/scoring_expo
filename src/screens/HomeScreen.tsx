@@ -10,7 +10,8 @@ import { BottomTabs } from '../components/BottomTabs';
 import { fetchFixturesWithTeams } from '../services/fixtures';
 
 type HomeScreenProps = {
-  navigation?: { navigate?: (route: string, params?: Record<string, unknown>) => void };
+  // Updated type definition to include params
+  navigation?: { navigate: (route: string, params?: any) => void };
 };
 
 export default function HomeScreen({ navigation }: HomeScreenProps) {
@@ -124,12 +125,12 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
       <StatusBar barStyle="dark-content" />
       <Header />
       
-      {/* Hlavný obsah: Sidebar + List zápasov */}
+      {/* Main Content: Sidebar + Matches List */}
       <View className="flex-1 flex-row">
         <SportSidebar />
         
         <View className="flex-1 bg-gray-50">
-           {/* Horizontálny dátumovník */}
+           {/* Horizontal Date Picker */}
            <View className="bg-white border-b border-gray-100">
              <View className="flex-row items-center justify-between px-4 py-2">
                <Pressable
@@ -174,23 +175,33 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
             {emptyState && (
               <Text className="px-4 py-2 text-gray-500">No fixtures available.</Text>
             )}
+            
             {leagueMatches.map((item, i) => (
               <MatchCard
                 key={`${item.league}-${i}`}
                 league={item.league}
                 matches={item.matches}
+                // --- NAVIGATION HANDLERS ---
+                
+                // 1. Click on match -> Go to Match Detail
                 onMatchPress={(match) => {
-                  navigation?.navigate?.('MatchDetail', { fixtureId: match.fixtureId });
+                  navigation?.navigate('MatchDetail', { fixtureId: match.fixtureId });
+                }}
+                
+                // 2. Click on League Header -> Go to League Profile
+                onLeaguePress={() => {
+                   // Passing league name so the detail screen can fetch/display correct data
+                   navigation?.navigate('LeagueDetail', { leagueId: item.league });
                 }}
               />
             ))}
-            {/* Padding na spodku aby BottomTabs nezakrývali obsah */}
+            
             <View className="h-24" />
           </ScrollView>
         </View>
       </View>
 
-      {/* Plávajúci NOTIFICATION BUTTON */}
+      {/* Floating Notification Button */}
       <View 
         style={{ elevation: 5 }}
         className="absolute bottom-28 right-6 bg-purple-600 p-4 rounded-full shadow-lg shadow-purple-500"
@@ -201,10 +212,9 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
         </View>
       </View>
 
-      {/* Explicitne povieme, že sme na 'Home' */}
       <BottomTabs
         activeTab="Home"
-        onNavigate={(routeName) => navigation?.navigate?.(routeName)}
+        onNavigate={(routeName) => navigation?.navigate(routeName)}
       />
     </SafeAreaView>
   );
@@ -213,7 +223,7 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
 function startOfWeek(date: Date) {
   const value = new Date(date);
   const day = value.getDay();
-  const diff = (day === 0 ? -6 : 1) - day; // Monday as start of week
+  const diff = (day === 0 ? -6 : 1) - day;
   value.setDate(value.getDate() + diff);
   value.setHours(0, 0, 0, 0);
   return value;

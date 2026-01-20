@@ -4,18 +4,23 @@ import React from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-// 1. Dôležitý import pre SafeArea
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import HomeScreen from './src/screens/HomeScreen';
 import NewsScreen from './src/screens/NewsScreen';
 import MatchDetailScreen from './src/screens/MatchDetailScreen';
+// NEW IMPORT (Make sure you created this file from previous steps)
+import LeagueDetailScreen from './src/screens/LeagueDetailScreen';
 
 const Stack = createNativeStackNavigator();
 
-if (global.ErrorUtils && !(global as any).__globalErrorHandlerSet) {
-  const prevHandler = global.ErrorUtils.getGlobalHandler?.();
-  global.ErrorUtils.setGlobalHandler((error, isFatal) => {
+const globalAny = global as any; // 1. Pretypujeme global na 'any'
+
+if (globalAny.ErrorUtils && !globalAny.__globalErrorHandlerSet) {
+  const prevHandler = globalAny.ErrorUtils.getGlobalHandler?.();
+  
+  // 2. Pridáme typy parametrov: error: any, isFatal?: boolean
+  globalAny.ErrorUtils.setGlobalHandler((error: any, isFatal?: boolean) => {
     try {
       console.error("GlobalError:", error?.stack ?? error);
     } catch {}
@@ -23,13 +28,12 @@ if (global.ErrorUtils && !(global as any).__globalErrorHandlerSet) {
       prevHandler(error, isFatal);
     }
   });
-  (global as any).__globalErrorHandlerSet = true;
+  globalAny.__globalErrorHandlerSet = true;
 }
 
 export default function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      {/* 2. Obalenie aplikácie Providerom */}
       <SafeAreaProvider>
         <NavigationContainer>
           <Stack.Navigator 
@@ -42,12 +46,15 @@ export default function App() {
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="News" component={NewsScreen} />
             
-            {/* Fallbacky */}
+            {/* Fallbacks */}
             <Stack.Screen name="Shop" component={HomeScreen} />
             <Stack.Screen name="Betting" component={HomeScreen} />
             <Stack.Screen name="Profile" component={HomeScreen} />
 
             <Stack.Screen name="MatchDetail" component={MatchDetailScreen} />
+            
+            {/* NEW SCREEN REGISTRATION */}
+            <Stack.Screen name="LeagueDetail" component={LeagueDetailScreen} />
             
           </Stack.Navigator>
         </NavigationContainer>
