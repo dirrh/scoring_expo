@@ -9,7 +9,7 @@ RUN npm install --legacy-peer-deps
 # Install @expo/ngrok globally for tunnel mode support
 RUN npm install -g @expo/ngrok@^4.1.0
 
-# Copy entrypoint script
+# Copy entrypoint script and fix line endings
 COPY docker-entrypoint.sh /app/docker-entrypoint.sh
 RUN chmod +x /app/docker-entrypoint.sh
 
@@ -33,4 +33,4 @@ ENV EXPO_NO_DOTENV=0
 #
 # The entrypoint script will generate a .env file from these environment variables
 # at container startup, which your app can then consume.
-CMD ["/app/docker-entrypoint.sh"]
+CMD ["sh", "/app/docker-entrypoint.sh"]
