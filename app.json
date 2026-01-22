@@ -2,6 +2,7 @@
   "expo": {
     "name": "Scoring",
     "slug": "Scoring",
+    "owner": "ferencakappdev",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -54,11 +55,12 @@
         {
           "locationAlwaysAndWhenInUsePermission": "Allow App to use your location even when the app is in background."
         }
-      ]
+      ],
+      "expo-font"
     ],
     "extra": {
       "eas": {
-        "projectId": "d099922c-6969-4e74-8562-3f608000adff"
+        "projectId": "efeb1172-d1f1-4364-863c-6277f73739a6"
       }
     }
   }
