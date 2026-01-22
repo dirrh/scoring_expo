@@ -3,6 +3,7 @@ import { View, Text, ScrollView, Pressable, StatusBar, StyleSheet } from "react-
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Image } from "expo-image";
+import { useNavigation } from "@react-navigation/native"; // <--- Import
 
 import { SimpleTable } from "../components/SimpleTable";
 import { MatchTimelineTab } from "../components/MatchTimelineTab";
@@ -58,12 +59,13 @@ type TabId = (typeof TABS)[number]["id"];
 export default function MatchDetailScreen() {
   const [activeTab, setActiveTab] = useState<TabId>("timeline");
   const match = useMemo(() => MOCK_MATCH, []);
+  const navigation = useNavigation(); // <--- Hook pre navigáciu (Späť)
 
   return (
     <SafeAreaView style={styles.container} edges={["top"]}>
       <StatusBar barStyle="dark-content" />
 
-      <HeaderBar />
+      <HeaderBar onBack={() => navigation.goBack()} /> 
       <MatchHeaderInfo data={match} />
       <TabBar activeTab={activeTab} onChange={setActiveTab} />
 
@@ -88,10 +90,10 @@ export default function MatchDetailScreen() {
   );
 }
 
-function HeaderBar() {
+function HeaderBar({ onBack }: { onBack: () => void }) {
   return (
     <View style={styles.headerBar}>
-      <Pressable style={styles.circleButton}>
+      <Pressable onPress={onBack} style={styles.circleButton}>
         <Ionicons name="chevron-back" size={24} color="black" />
       </Pressable>
       <View style={styles.headerActions}>
@@ -149,11 +151,20 @@ function FloatingButtons() {
   );
 }
 
+// --- UPRAVENÝ HEADER S KLIKANÍM ---
 function MatchHeaderInfo({ data }: { data: MatchDetailData }) {
+  const navigation = useNavigation<any>();
+
+  const openTeamDetail = () => {
+    navigation.navigate("TeamDetail");
+  };
+
   return (
     <View style={styles.scoreCard}>
       <View style={styles.scoreRow}>
-        <View style={styles.teamColumn}>
+        
+        {/* DOMÁCI - KLIKATEĽNÝ */}
+        <Pressable onPress={openTeamDetail} style={styles.teamColumn}>
           <View style={styles.teamLogoWrap}>
             <Ionicons name="star-outline" size={20} color="black" style={styles.teamStarLeft} />
             {data.homeTeam.logo ? (
@@ -164,7 +175,7 @@ function MatchHeaderInfo({ data }: { data: MatchDetailData }) {
           {data.homeTeam.scorers.map((s, i) => (
             <Text key={i} style={styles.scorerText}>{s}</Text>
           ))}
-        </View>
+        </Pressable>
 
         <View style={styles.scoreCenter}>
           <Text style={styles.scoreText}>
@@ -174,7 +185,8 @@ function MatchHeaderInfo({ data }: { data: MatchDetailData }) {
           <Ionicons name="football-outline" size={24} color="#9ca3af" style={{ marginTop: 12 }} />
         </View>
 
-        <View style={styles.teamColumn}>
+        {/* HOSTIA - KLIKATEĽNÝ */}
+        <Pressable onPress={openTeamDetail} style={styles.teamColumn}>
           <View style={styles.teamLogoWrap}>
             {data.awayTeam.logo ? (
               <Image source={{ uri: data.awayTeam.logo }} style={styles.teamLogo} contentFit="contain" />
@@ -185,7 +197,7 @@ function MatchHeaderInfo({ data }: { data: MatchDetailData }) {
           {data.awayTeam.scorers.map((s, i) => (
             <Text key={i} style={styles.scorerText}>{s}</Text>
           ))}
-        </View>
+        </Pressable>
       </View>
     </View>
   );

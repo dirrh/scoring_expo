@@ -9,17 +9,16 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import HomeScreen from './src/screens/HomeScreen';
 import NewsScreen from './src/screens/NewsScreen';
 import MatchDetailScreen from './src/screens/MatchDetailScreen';
-// NEW IMPORT (Make sure you created this file from previous steps)
+// --- IMPORTS ---
 import LeagueDetailScreen from './src/screens/LeagueDetailScreen';
+import TeamDetailScreen from './src/screens/TeamDetailScreen'; // <--- NEW
 
 const Stack = createNativeStackNavigator();
 
-const globalAny = global as any; // 1. Pretypujeme global na 'any'
+const globalAny = global as any;
 
 if (globalAny.ErrorUtils && !globalAny.__globalErrorHandlerSet) {
   const prevHandler = globalAny.ErrorUtils.getGlobalHandler?.();
-  
-  // 2. Pridáme typy parametrov: error: any, isFatal?: boolean
   globalAny.ErrorUtils.setGlobalHandler((error: any, isFatal?: boolean) => {
     try {
       console.error("GlobalError:", error?.stack ?? error);
@@ -53,8 +52,9 @@ export default function App() {
 
             <Stack.Screen name="MatchDetail" component={MatchDetailScreen} />
             
-            {/* NEW SCREEN REGISTRATION */}
+            {/* --- NEW SCREENS --- */}
             <Stack.Screen name="LeagueDetail" component={LeagueDetailScreen} />
+            <Stack.Screen name="TeamDetail" component={TeamDetailScreen} />
             
           </Stack.Navigator>
         </NavigationContainer>
