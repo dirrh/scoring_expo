@@ -9,9 +9,10 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import HomeScreen from './src/screens/HomeScreen';
 import NewsScreen from './src/screens/NewsScreen';
 import MatchDetailScreen from './src/screens/MatchDetailScreen';
-// --- IMPORTS ---
 import LeagueDetailScreen from './src/screens/LeagueDetailScreen';
-import TeamDetailScreen from './src/screens/TeamDetailScreen'; // <--- NEW
+import TeamDetailScreen from './src/screens/TeamDetailScreen';
+// IMPORT NEW SCREEN
+import PlayerDetailScreen from './src/screens/PlayerDetailScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -52,9 +53,10 @@ export default function App() {
 
             <Stack.Screen name="MatchDetail" component={MatchDetailScreen} />
             
-            {/* --- NEW SCREENS --- */}
             <Stack.Screen name="LeagueDetail" component={LeagueDetailScreen} />
             <Stack.Screen name="TeamDetail" component={TeamDetailScreen} />
+            {/* REGISTER PLAYER DETAIL */}
+            <Stack.Screen name="PlayerDetail" component={PlayerDetailScreen} />
             
           </Stack.Navigator>
         </NavigationContainer>

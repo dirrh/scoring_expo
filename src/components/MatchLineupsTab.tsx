@@ -1,13 +1,14 @@
 import React from "react";
-import { View, Text, StyleSheet, ScrollView, type DimensionValue } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Pressable, type DimensionValue } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 // --- TYPY ---
 type PlayerPos = {
   id: string;
   name: string;
   number: number;
-  top: string; // Pozícia v % od vrchu
-  left: string; // Pozícia v % zľava
+  top: string;
+  left: string;
 };
 
 type SubPlayer = {
@@ -16,44 +17,36 @@ type SubPlayer = {
   position: string;
 };
 
-// --- MOCK DÁTA (LIVERPOOL vs MAN CITY) ---
+// --- MOCK DÁTA ---
 const HOME_FORMATION = "4-2-3-1";
 const AWAY_FORMATION = "4-1-4-1";
 
-// UPRAVENÉ SÚRADNICE: Brankári posunutí od krajov, formácie prispôsobené
 const HOME_PLAYERS: PlayerPos[] = [
-  { id: "h1", name: "25 Mamardashvili", number: 25, top: "11%", left: "50%" }, // GK - posunutý nižšie pod nápis
-  { id: "h2", name: "12 Bradley", number: 12, top: "21%", left: "15%" },      // DEF - posunutí nižšie
+  { id: "h1", name: "25 Mamardashvili", number: 25, top: "11%", left: "50%" },
+  { id: "h2", name: "12 Bradley", number: 12, top: "21%", left: "15%" },
   { id: "h3", name: "5 Konaté", number: 5, top: "21%", left: "38%" },
   { id: "h4", name: "4 van Dijk", number: 4, top: "21%", left: "62%" },
   { id: "h5", name: "3 Kerkez", number: 3, top: "21%", left: "85%" },
-  
-  { id: "h6", name: "38 Gravenberch", number: 38, top: "31%", left: "35%" }, // CDM
-  { id: "h7", name: "10 Mac Allister", number: 10, top: "31%", left: "65%" }, // CDM
-  
-  { id: "h8", name: "8 Szoboszlai", number: 8, top: "40%", left: "50%" }, // CAM
-  { id: "h9", name: "11 Salah", number: 11, top: "40%", left: "15%" }, // RW
-  { id: "h10", name: "18 Gakpo", number: 18, top: "40%", left: "85%" }, // LW
-  
-  { id: "h11", name: "9 Isak", number: 9, top: "48%", left: "50%" }, // ST
+  { id: "h6", name: "38 Gravenberch", number: 38, top: "31%", left: "35%" },
+  { id: "h7", name: "10 Mac Allister", number: 10, top: "31%", left: "65%" },
+  { id: "h8", name: "8 Szoboszlai", number: 8, top: "40%", left: "50%" },
+  { id: "h9", name: "11 Salah", number: 11, top: "40%", left: "15%" },
+  { id: "h10", name: "18 Gakpo", number: 18, top: "40%", left: "85%" },
+  { id: "h11", name: "9 Isak", number: 9, top: "48%", left: "50%" },
 ];
 
 const AWAY_PLAYERS: PlayerPos[] = [
-  { id: "a1", name: "25 Donnarumma", number: 25, top: "88%", left: "50%" }, // GK - posunutý vyššie nad nápis
-  
-  { id: "a2", name: "27 Nunez", number: 27, top: "78%", left: "15%" },      // DEF - posunutí vyššie
+  { id: "a1", name: "25 Donnarumma", number: 25, top: "88%", left: "50%" },
+  { id: "a2", name: "27 Nunez", number: 27, top: "78%", left: "15%" },
   { id: "a3", name: "3 Dias", number: 3, top: "78%", left: "38%" },
   { id: "a4", name: "6 Aké", number: 6, top: "78%", left: "62%" },
   { id: "a5", name: "33 O'Reilly", number: 33, top: "78%", left: "85%" },
-  
-  { id: "a6", name: "14 González", number: 14, top: "70%", left: "50%" }, // DM
-  
+  { id: "a6", name: "14 González", number: 14, top: "70%", left: "50%" },
   { id: "a7", name: "11 Doku", number: 11, top: "60%", left: "15%" },
   { id: "a8", name: "47 Foden", number: 47, top: "60%", left: "35%" },
   { id: "a9", name: "4 Reijnders", number: 4, top: "60%", left: "65%" },
   { id: "a10", name: "26 Savinho", number: 26, top: "60%", left: "85%" },
-  
-  { id: "a11", name: "9 Haaland", number: 9, top: "53%", left: "50%" }, // ST
+  { id: "a11", name: "9 Haaland", number: 9, top: "53%", left: "50%" },
 ];
 
 const SUBS_HOME: SubPlayer[] = [
@@ -80,27 +73,19 @@ export function MatchLineupsTab() {
       
       {/* --- IHRISKO (PITCH) --- */}
       <View style={styles.pitchContainer}>
-        {/* Pozadie a čiary */}
         <View style={styles.pitchBackground}>
-          {/* Stredová čiara */}
           <View style={styles.centerLine} />
-          {/* Stredový kruh */}
           <View style={styles.centerCircle} />
-          {/* Šestnástka Hore (Home) */}
           <View style={[styles.penaltyBox, styles.penaltyBoxTop]} />
-          {/* Šestnástka Dole (Away) */}
           <View style={[styles.penaltyBox, styles.penaltyBoxBottom]} />
-          {/* Bránkové územia (Goal Box) */}
           <View style={[styles.goalBox, styles.goalBoxTop]} />
           <View style={[styles.goalBox, styles.goalBoxBottom]} />
-          {/* Rohové oblúky */}
           <View style={[styles.cornerArc, styles.cornerTL]} />
           <View style={[styles.cornerArc, styles.cornerTR]} />
           <View style={[styles.cornerArc, styles.cornerBL]} />
           <View style={[styles.cornerArc, styles.cornerBR]} />
         </View>
 
-        {/* Hlavičky tímov na ihrisku */}
         <View style={styles.pitchHeaderTop}>
           <View style={styles.teamBadgePlaceholder} />
           <Text style={styles.pitchTeamName}>LIVERPOOL   <Text style={styles.formationText}>{HOME_FORMATION}</Text></Text>
@@ -111,7 +96,6 @@ export function MatchLineupsTab() {
           <View style={styles.teamBadgePlaceholder} />
         </View>
 
-        {/* --- HRÁČI (ABSOLUTNE POZICIOVANÍ) --- */}
         {HOME_PLAYERS.map((p) => (
           <PlayerMarker key={p.id} player={p} />
         ))}
@@ -142,14 +126,12 @@ export function MatchLineupsTab() {
       </View>
       
       <View style={styles.subsContainer}>
-        {/* Ľavý stĺpec (Domáci) */}
         <View style={styles.subsColumn}>
           {SUBS_HOME.map((sub, index) => (
             <SubItem key={sub.id} sub={sub} align="left" />
           ))}
         </View>
 
-        {/* Pravý stĺpec (Hostia) */}
         <View style={styles.subsColumn}>
           {SUBS_AWAY.map((sub, index) => (
             <SubItem key={sub.id} sub={sub} align="right" />
@@ -161,30 +143,38 @@ export function MatchLineupsTab() {
   );
 }
 
-// Komponent pre jedného hráča na ihrisku
+// Komponent pre hráča na ihrisku
 function PlayerMarker({ player }: { player: PlayerPos }) {
+  const navigation = useNavigation<any>();
   return (
-    <View style={[styles.playerMarker, { top: player.top as DimensionValue, left: player.left as DimensionValue }]}>
+    <Pressable 
+      onPress={() => navigation.navigate("PlayerDetail")}
+      style={[styles.playerMarker, { top: player.top as DimensionValue, left: player.left as DimensionValue }]}
+    >
       <View style={styles.playerCircle} />
       <View style={styles.playerNameTag}>
         <Text style={styles.playerNameText}>{player.name}</Text>
       </View>
-    </View>
+    </Pressable>
   );
 }
 
-// Komponent pre náhradníka v zozname
+// Komponent pre náhradníka
 function SubItem({ sub, align }: { sub: SubPlayer, align: 'left' | 'right' }) {
+  const navigation = useNavigation<any>();
   const isLeft = align === 'left';
   return (
-    <View style={[styles.subRow, isLeft ? styles.subRowLeft : styles.subRowRight]}>
+    <Pressable 
+      onPress={() => navigation.navigate("PlayerDetail")}
+      style={[styles.subRow, isLeft ? styles.subRowLeft : styles.subRowRight]}
+    >
       {isLeft && <View style={styles.avatarCircleSmall} />}
       <View style={isLeft ? { marginLeft: 12 } : { marginRight: 12, alignItems: 'flex-end' }}>
         <Text style={styles.subName}>{sub.name}</Text>
         <Text style={styles.subPos}>{sub.position}</Text>
       </View>
       {!isLeft && <View style={styles.avatarCircleSmall} />}
-    </View>
+    </Pressable>
   );
 }
 
@@ -193,21 +183,19 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#FFFFFF",
   },
-  // --- IHRISKO ---
   pitchContainer: {
     marginHorizontal: 16,
     marginTop: 16,
-    height: 740, // Výška ihriska
+    height: 740,
     borderRadius: 16,
     overflow: 'hidden',
     position: 'relative',
-    backgroundColor: '#0F9D58', // Zelená tráva
+    backgroundColor: '#0F9D58',
   },
   pitchBackground: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: '#00B16A', // Sýtejšia zelená
+    backgroundColor: '#00B16A',
   },
-  // Čiary ihriska
   centerLine: {
     position: 'absolute',
     top: '50%',
@@ -231,7 +219,7 @@ const styles = StyleSheet.create({
   penaltyBox: {
     position: 'absolute',
     left: '50%',
-    marginLeft: '-35%', // 70% šírka
+    marginLeft: '-35%',
     width: '70%',
     height: '16%',
     borderWidth: 2,
@@ -243,7 +231,7 @@ const styles = StyleSheet.create({
   goalBox: {
     position: 'absolute',
     left: '50%',
-    marginLeft: '-15%', // 30% šírka
+    marginLeft: '-15%',
     width: '30%',
     height: '6%',
     borderWidth: 2,
@@ -265,7 +253,6 @@ const styles = StyleSheet.create({
   cornerBL: { bottom: -15, left: -15 },
   cornerBR: { bottom: -15, right: -15 },
 
-  // --- LIŠTY TÍMOV NA IHRISKU ---
   pitchHeaderTop: {
     position: 'absolute',
     top: 0,
@@ -276,7 +263,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 16,
-    zIndex: 10, // Pre istotu, aby bol nápis "nad" hráčom, ak by sa predsa len dotkli
+    zIndex: 10,
   },
   pitchHeaderBottom: {
     position: 'absolute',
@@ -310,7 +297,6 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
 
-  // --- HRÁČ (MARKER) ---
   playerMarker: {
     position: 'absolute',
     alignItems: 'center',
@@ -345,7 +331,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 
-  // --- SEKCIE POD IHRISKOM ---
   sectionHeader: {
     alignItems: 'center',
     marginTop: 24,
@@ -359,7 +344,6 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
 
-  // --- COACHES ---
   coachRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -381,7 +365,6 @@ const styles = StyleSheet.create({
     color: '#1F2937',
   },
 
-  // --- SUBSTITUTES ---
   subsContainer: {
     flexDirection: 'row',
     paddingHorizontal: 16,

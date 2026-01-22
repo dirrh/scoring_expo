@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
+import { useNavigation } from "@react-navigation/native";
 
 const SQUAD_DATA = [
   { title: "COACH", players: [{ number: "", name: "Arne Slot" }] },
@@ -8,6 +9,8 @@ const SQUAD_DATA = [
 ];
 
 export function TeamSquadTab() {
+  const navigation = useNavigation<any>();
+
   return (
     <ScrollView style={{flex: 1, padding: 16}} showsVerticalScrollIndicator={false}>
       {SQUAD_DATA.map((section, index) => (
@@ -15,12 +18,16 @@ export function TeamSquadTab() {
           <Text style={{fontSize: 11, fontWeight: '800', color: '#111827', marginBottom: 12, textTransform: 'uppercase'}}>{section.title}</Text>
           <View style={{backgroundColor: '#FFFFFF', borderRadius: 20, paddingVertical: 8, paddingHorizontal: 16}}>
             {section.players.map((player, pIndex) => (
-              <View key={pIndex} style={{flexDirection: 'row', alignItems: 'center', paddingVertical: 12}}>
+              <Pressable 
+                key={pIndex} 
+                onPress={() => navigation.navigate("PlayerDetail")}
+                style={{flexDirection: 'row', alignItems: 'center', paddingVertical: 12}}
+              >
                 <View style={{width: 40, height: 40, borderRadius: 20, backgroundColor: '#E5E7EB', alignItems: 'center', justifyContent: 'center', marginRight: 12}}>
                    {player.number ? <Text style={{fontSize: 12, fontWeight: '700', color: '#374151'}}>{player.number}</Text> : null}
                 </View>
                 <Text style={{fontSize: 14, fontWeight: '700', color: '#111827'}}>{player.name}</Text>
-              </View>
+              </Pressable>
             ))}
           </View>
         </View>

@@ -1,6 +1,7 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 type TimelineEvent = {
   id: number | string;
@@ -67,6 +68,7 @@ export function MatchTimelineTab({
 }
 
 function TimelineEventRow({ event }: { event: TimelineEvent }) {
+  const navigation = useNavigation<any>();
   const isHome = event.team === "home";
 
   const getIcon = () => {
@@ -82,13 +84,20 @@ function TimelineEventRow({ event }: { event: TimelineEvent }) {
     }
   };
 
+  const goToPlayer = () => {
+    navigation.navigate("PlayerDetail");
+  };
+
   return (
     <View className="flex-row items-center w-full mb-6">
       <View className="flex-1 flex-row justify-end items-center pr-4">
         {isHome && (
           <>
             <Ionicons name="arrow-redo" size={14} color="black" style={{ marginRight: 8 }} />
-            <Text className="font-bold text-gray-900 mr-2">{event.player}</Text>
+            {/* CLICKABLE PLAYER NAME */}
+            <Pressable onPress={goToPlayer}>
+              <Text className="font-bold text-gray-900 mr-2">{event.player}</Text>
+            </Pressable>
             {event.score && <Text className="font-bold text-green-500 mr-2">{event.score}</Text>}
             {getIcon()}
           </>
@@ -104,7 +113,10 @@ function TimelineEventRow({ event }: { event: TimelineEvent }) {
           <>
             {getIcon()}
             {event.score && <Text className="font-bold text-green-500 ml-2">{event.score}</Text>}
-            <Text className="font-bold text-gray-900 ml-2">{event.player}</Text>
+            {/* CLICKABLE PLAYER NAME */}
+            <Pressable onPress={goToPlayer}>
+              <Text className="font-bold text-gray-900 ml-2">{event.player}</Text>
+            </Pressable>
             <Ionicons name="arrow-undo" size={14} color="black" style={{ marginLeft: 8 }} />
           </>
         )}
