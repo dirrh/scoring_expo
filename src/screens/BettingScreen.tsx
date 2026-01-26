@@ -1,58 +1,30 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Pressable, Image, StatusBar } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable, StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { BottomTabs } from '../components/BottomTabs';
 
-// --- MOCK DATA ---
+// 1. IMPORT DATA
+import ALL_MATCHES from '../data/matches.json'; 
+
+// --- CONSTANTS ---
 const SPORTS = ["Football", "Basketball", "Hockey", "Tennis", "Baseball", "MMA"];
 
 const LEAGUES = [
-  { id: 1, name: "Premier League", logo: "https://upload.wikimedia.org/wikipedia/en/f/f2/Premier_League_Logo.svg" }, // Placeholder logic below
-  { id: 2, name: "Champions League", logo: "" },
-  { id: 3, name: "Serie A", logo: "" },
-  { id: 4, name: "La Liga", logo: "" },
-  { id: 5, name: "Bundesliga", logo: "" },
-];
-
-const MATCHES = [
-  {
-    id: 'm1',
-    home: { name: "MAN CITY", logo: "https://resources.premierleague.com/premierleague/badges/t43.svg" },
-    away: { name: "BOURNEMOUTH", logo: "https://resources.premierleague.com/premierleague/badges/t91.svg" },
-    isLive: true,
-    score: "2 - 1",
-    time: "2ND HALF • 67'",
-    vol: "1.18k",
-    odds: { w1: "11%", x: "14%", w2: "75%" },
-    favorite: true
-  },
-  {
-    id: 'm2',
-    home: { name: "WOLVES", logo: "https://resources.premierleague.com/premierleague/badges/t39.svg" },
-    away: { name: "MAN UNITED", logo: "https://resources.premierleague.com/premierleague/badges/t1.svg" },
-    isLive: true,
-    score: "2 - 2",
-    time: "1ST HALF • 24'",
-    vol: "450",
-    odds: { w1: "25%", x: "54%", w2: "21%" },
-    favorite: false
-  },
-  {
-    id: 'm3',
-    home: { name: "CHELSEA", logo: "https://resources.premierleague.com/premierleague/badges/t8.svg" },
-    away: { name: "LIVERPOOL", logo: "https://resources.premierleague.com/premierleague/badges/t14.svg" },
-    isLive: false,
-    score: "15 : 30",
-    time: "SAT • 6.12.",
-    vol: "1.93k",
-    odds: { w1: "13%", x: "35%", w2: "52%" },
-    favorite: false
-  }
+  { id: 1, name: "Premier League" },
+  { id: 2, name: "Champions League" },
+  { id: 3, name: "Serie A" },
+  { id: 4, name: "La Liga" },
+  { id: 5, name: "Bundesliga" },
 ];
 
 export default function BettingScreen({ navigation }: any) {
   const [selectedSport, setSelectedSport] = useState("Football");
+  // 2. STATE FOR SELECTED LEAGUE (Default 1 = Premier League)
+  const [selectedLeague, setSelectedLeague] = useState(1);
+
+  // 3. FILTER MATCHES
+  const filteredMatches = ALL_MATCHES.filter(match => match.leagueId === selectedLeague);
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
@@ -84,75 +56,104 @@ export default function BettingScreen({ navigation }: any) {
         
         {/* --- LEAGUES HORIZONTAL SCROLL --- */}
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.leaguesContainer}>
-           {LEAGUES.map((league, index) => (
-             <Pressable key={index} style={styles.leagueItem}>
-                <View style={styles.leagueCircle}>
-                   {/* Placeholder Icon ak nemame SVG */}
-                   <Ionicons name="trophy" size={20} color={index === 0 ? "#4B0082" : "#6B7280"} />
-                </View>
-                <Text style={styles.leagueName}>{league.name.replace(' ', '\n')}</Text>
-             </Pressable>
-           ))}
+           {LEAGUES.map((league) => {
+             const isActive = selectedLeague === league.id;
+             return (
+               <Pressable 
+                 key={league.id} 
+                 style={styles.leagueItem}
+                 onPress={() => setSelectedLeague(league.id)} // <--- CLICK CHANGES LEAGUE
+               >
+                  <View style={[
+                    styles.leagueCircle, 
+                    isActive && styles.leagueCircleActive // Highlight active league
+                  ]}>
+                     <Ionicons 
+                        name="trophy" 
+                        size={20} 
+                        color={isActive ? "#FFFFFF" : "#6B7280"} // White icon if active
+                     />
+                  </View>
+                  <Text style={[
+                    styles.leagueName, 
+                    isActive && { color: '#111827', fontWeight: '900' }
+                  ]}>
+                    {league.name.replace(' ', '\n')}
+                  </Text>
+               </Pressable>
+             );
+           })}
            <View style={{width: 16}} />
         </ScrollView>
 
         {/* --- MATCH CARDS --- */}
         <View style={styles.matchesList}>
-          {MATCHES.map((match) => (
-            <View key={match.id} style={styles.matchCard}>
-              
-              {/* Card Header: Vol & Fav */}
-              <View style={styles.cardHeader}>
-                 <View style={{flexDirection:'row', alignItems:'center'}}>
-                    <Ionicons name="stats-chart" size={14} color="#9CA3AF" style={{marginRight:4}}/>
-                    <Text style={styles.volText}>{match.vol} Vol.</Text>
-                 </View>
-                 <Ionicons name={match.favorite ? "star" : "star-outline"} size={18} color={match.favorite ? "#FACC15" : "#9CA3AF"} />
-              </View>
+          {/* Render only filtered matches */}
+          {filteredMatches.length > 0 ? (
+            filteredMatches.map((match) => (
+              <Pressable 
+                key={match.id} 
+                style={styles.matchCard}
+                onPress={() => navigation.navigate('BettingDetail', { match: match })} // <--- NAVIGATE TO DETAIL
+              >
+                
+                {/* Card Header: Vol & Fav */}
+                <View style={styles.cardHeader}>
+                   <View style={{flexDirection:'row', alignItems:'center'}}>
+                      <Ionicons name="stats-chart" size={14} color="#9CA3AF" style={{marginRight:4}}/>
+                      <Text style={styles.volText}>{match.vol} Vol.</Text>
+                   </View>
+                   <Ionicons name={match.favorite ? "star" : "star-outline"} size={18} color={match.favorite ? "#FACC15" : "#9CA3AF"} />
+                </View>
 
-              {/* Teams & Score Row */}
-              <View style={styles.teamsRow}>
-                 {/* Home */}
-                 <View style={styles.teamSide}>
-                    <View style={styles.teamLogo}><Ionicons name="shield" size={24} color="#3B82F6"/></View> 
-                    <Text style={styles.teamName}>{match.home.name}</Text>
-                 </View>
+                {/* Teams & Score Row */}
+                <View style={styles.teamsRow}>
+                   {/* Home */}
+                   <View style={styles.teamSide}>
+                      <View style={styles.teamLogo}><Ionicons name="shield" size={24} color="#3B82F6"/></View> 
+                      <Text style={styles.teamName}>{match.home.name}</Text>
+                   </View>
 
-                 {/* Center Info */}
-                 <View style={styles.scoreInfo}>
-                    <Text style={[styles.scoreText, match.isLive ? {color: '#EF4444'} : {color: '#111827'}]}>
-                       {match.score}
-                    </Text>
-                    <Text style={[styles.timeText, match.isLive ? {color: '#EF4444'} : {color: '#6B7280'}]}>
-                       {match.time}
-                    </Text>
-                 </View>
+                   {/* Center Info */}
+                   <View style={styles.scoreInfo}>
+                      <Text style={[styles.scoreText, match.isLive ? {color: '#EF4444'} : {color: '#111827'}]}>
+                         {match.score}
+                      </Text>
+                      <Text style={[styles.timeText, match.isLive ? {color: '#EF4444'} : {color: '#6B7280'}]}>
+                         {match.time}
+                      </Text>
+                   </View>
 
-                 {/* Away */}
-                 <View style={styles.teamSide}>
-                    <Text style={styles.teamName}>{match.away.name}</Text>
-                    <View style={styles.teamLogo}><Ionicons name="shield" size={24} color="#EF4444"/></View>
-                 </View>
-              </View>
+                   {/* Away */}
+                   <View style={styles.teamSide}>
+                      <Text style={styles.teamName}>{match.away.name}</Text>
+                      <View style={styles.teamLogo}><Ionicons name="shield" size={24} color="#EF4444"/></View>
+                   </View>
+                </View>
 
-              {/* Odds Buttons */}
-              <View style={styles.oddsRow}>
-                 <View style={styles.oddBtn}>
-                    <Text style={styles.oddLabel}>1W</Text>
-                    <Text style={styles.oddValue}>{match.odds.w1}</Text>
-                 </View>
-                 <View style={styles.oddBtn}>
-                    <Text style={styles.oddLabel}>X</Text>
-                    <Text style={styles.oddValue}>{match.odds.x}</Text>
-                 </View>
-                 <View style={styles.oddBtn}>
-                    <Text style={styles.oddLabel}>2W</Text>
-                    <Text style={styles.oddValue}>{match.odds.w2}</Text>
-                 </View>
-              </View>
+                {/* Odds Buttons */}
+                <View style={styles.oddsRow}>
+                   <View style={styles.oddBtn}>
+                      <Text style={styles.oddLabel}>1W</Text>
+                      <Text style={styles.oddValue}>{match.odds.w1}</Text>
+                   </View>
+                   <View style={styles.oddBtn}>
+                      <Text style={styles.oddLabel}>X</Text>
+                      <Text style={styles.oddValue}>{match.odds.x}</Text>
+                   </View>
+                   <View style={styles.oddBtn}>
+                      <Text style={styles.oddLabel}>2W</Text>
+                      <Text style={styles.oddValue}>{match.odds.w2}</Text>
+                   </View>
+                </View>
 
+              </Pressable>
+            ))
+          ) : (
+            <View style={{alignItems: 'center', marginTop: 20}}>
+              <Text style={{color: '#9CA3AF'}}>No matches found for this league.</Text>
             </View>
-          ))}
+          )}
         </View>
 
       </ScrollView>
@@ -175,7 +176,7 @@ const styles = StyleSheet.create({
     alignItems: 'center', 
     paddingHorizontal: 16, 
     paddingVertical: 12,
-    backgroundColor: '#F3F4F6' // Blend with bg
+    backgroundColor: '#F3F4F6' 
   },
   sportSelector: {
     flexDirection: 'row',
@@ -207,7 +208,10 @@ const styles = StyleSheet.create({
     alignItems: 'center', justifyContent: 'center', marginBottom: 8,
     shadowColor: "#000", shadowOpacity: 0.05, shadowRadius: 5, elevation: 2
   },
-  leagueName: { fontSize: 9, fontWeight: '700', textAlign: 'center', color: '#111827' },
+  leagueCircleActive: {
+    backgroundColor: '#4B0082', // Active league color
+  },
+  leagueName: { fontSize: 9, fontWeight: '700', textAlign: 'center', color: '#6B7280' },
 
   // Matches
   matchesList: { paddingHorizontal: 16 },
@@ -223,7 +227,7 @@ const styles = StyleSheet.create({
   
   teamsRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 },
   teamSide: { flexDirection: 'row', alignItems: 'center' },
-  teamLogo: { width: 32, height: 32, borderRadius: 16, backgroundColor: '#F3F4F6', alignItems:'center', justifyContent:'center' }, // Placeholder for logo
+  teamLogo: { width: 32, height: 32, borderRadius: 16, backgroundColor: '#F3F4F6', alignItems:'center', justifyContent:'center' }, 
   teamName: { fontSize: 14, fontWeight: '900', color: '#111827', textTransform: 'uppercase', marginHorizontal: 8 },
   
   scoreInfo: { alignItems: 'center' },

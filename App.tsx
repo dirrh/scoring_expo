@@ -18,7 +18,8 @@ import ProfileScreen from './src/screens/ProfileScreen';
 import ChatDetailScreen from './src/screens/ChatDetailScreen';
 
 // --- BETTING SECTION ---
-import BettingScreen from './src/screens/BettingScreen'; // <--- NOVÝ IMPORT
+import BettingScreen from './src/screens/BettingScreen'; 
+import BettingDetailScreen from './src/screens/BettingDetailScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -57,6 +58,7 @@ export default function App() {
             
             {/* --- UPDATED BETTING SCREEN --- */}
             <Stack.Screen name="Betting" component={BettingScreen} />
+            <Stack.Screen name="BettingDetail" component={BettingDetailScreen} />
 
             {/* --- PROFILE SECTION --- */}
             <Stack.Screen name="Profile" component={ProfileScreen} />

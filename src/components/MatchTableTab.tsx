@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
 import { Image } from 'expo-image';
-import { fetchLeagueStandings } from '../services/league';
-import { LeagueTableEntry } from '../types/league';
+import { fetchLeagueStandings } from '../../services/league';
+import { LeagueTableEntry } from '../../types/league';
 
 interface MatchTableTabProps {
   leagueId: string;
