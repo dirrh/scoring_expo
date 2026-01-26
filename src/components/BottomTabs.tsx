@@ -1,4 +1,5 @@
 import { View, Text, TouchableOpacity } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 // Definícia props, ktoré komponent prijíma
@@ -8,6 +9,7 @@ interface BottomTabsProps {
 }
 
 export const BottomTabs = ({ activeTab, onNavigate }: BottomTabsProps) => {
+  const insets = useSafeAreaInsets();
   const tabs = [
     { name: 'Shop', icon: 'cart-outline', library: 'Ionicons', routeName: 'Shop' },
     { name: 'News', icon: 'newspaper-outline', library: 'Ionicons', routeName: 'News' }, 
@@ -17,7 +19,10 @@ export const BottomTabs = ({ activeTab, onNavigate }: BottomTabsProps) => {
   ];
 
   return (
-    <View className="flex-row justify-around items-center bg-white py-3 border-t border-gray-100 absolute bottom-0 w-full pb-8">
+    <View
+      className="flex-row justify-around items-center bg-white py-3 border-t border-gray-100 absolute bottom-0 w-full"
+      style={{ paddingBottom: Math.max(insets.bottom, 8) }}
+    >
       {tabs.map((tab, i) => {
         // Porovnávame activeTab (prop) s routeName tabu
         const isActive = activeTab === tab.routeName;

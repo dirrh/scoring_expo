@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView, StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { BottomTabs } from '../components/BottomTabs';
 
 // Importy tabov (vytvoríme ich nižšie)
 import { ProfileSocialTab } from '../components/profile/ProfileSocialTab';
@@ -83,12 +84,17 @@ export default function ProfileScreen({ navigation }: any) {
         {activeTab === 'activity' && <View style={{padding: 20}}><Text>Activity Coming Soon</Text></View>}
       </View>
 
+      <BottomTabs
+        activeTab="Profile"
+        onNavigate={(routeName) => navigation?.navigate?.(routeName)}
+      />
+
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#FFFFFF' },
+  container: { flex: 1, backgroundColor: '#FFFFFF', paddingBottom: 80 },
   header: { paddingHorizontal: 20, paddingTop: 10, paddingBottom: 20 },
   headerTop: { flexDirection: 'row', alignItems: 'center', marginBottom: 12 },
   avatarContainer: { marginRight: 16 },
@@ -107,5 +113,5 @@ const styles = StyleSheet.create({
   tabItemActive: { borderBottomColor: '#111827' },
   tabText: { fontSize: 14, fontWeight: '500', color: '#6B7280' },
   tabTextActive: { color: '#111827', fontWeight: '700' },
-  contentArea: { flex: 1, backgroundColor: '#F9FAFB' }
+  contentArea: { flex: 1, backgroundColor: '#F9FAFB', paddingBottom: 20 }
 });

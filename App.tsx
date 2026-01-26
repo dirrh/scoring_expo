@@ -13,9 +13,12 @@ import LeagueDetailScreen from './src/screens/LeagueDetailScreen';
 import TeamDetailScreen from './src/screens/TeamDetailScreen';
 import PlayerDetailScreen from './src/screens/PlayerDetailScreen';
 
-// --- NEW IMPORTS FOR PROFILE SECTION ---
+// --- PROFILE SECTION ---
 import ProfileScreen from './src/screens/ProfileScreen';
 import ChatDetailScreen from './src/screens/ChatDetailScreen';
+
+// --- BETTING SECTION ---
+import BettingScreen from './src/screens/BettingScreen'; // <--- NOVÝ IMPORT
 
 const Stack = createNativeStackNavigator();
 
@@ -51,19 +54,19 @@ export default function App() {
             
             {/* Fallbacks */}
             <Stack.Screen name="Shop" component={HomeScreen} />
-            <Stack.Screen name="Betting" component={HomeScreen} />
             
-            {/* --- UPDATED PROFILE SCREEN --- */}
-            <Stack.Screen name="Profile" component={ProfileScreen} />
+            {/* --- UPDATED BETTING SCREEN --- */}
+            <Stack.Screen name="Betting" component={BettingScreen} />
 
+            {/* --- PROFILE SECTION --- */}
+            <Stack.Screen name="Profile" component={ProfileScreen} />
+            <Stack.Screen name="ChatDetail" component={ChatDetailScreen} />
+
+            {/* --- DETAIL SCREENS --- */}
             <Stack.Screen name="MatchDetail" component={MatchDetailScreen} />
-            
             <Stack.Screen name="LeagueDetail" component={LeagueDetailScreen} />
             <Stack.Screen name="TeamDetail" component={TeamDetailScreen} />
             <Stack.Screen name="PlayerDetail" component={PlayerDetailScreen} />
-            
-            {/* --- NEW CHAT DETAIL SCREEN --- */}
-            <Stack.Screen name="ChatDetail" component={ChatDetailScreen} />
             
           </Stack.Navigator>
         </NavigationContainer>

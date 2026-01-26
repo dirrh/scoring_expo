@@ -2,10 +2,11 @@ import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TextInput, KeyboardAvoidingView, Platform, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { BottomTabs } from '../components/BottomTabs';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 export default function ChatDetailScreen() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const route = useRoute<any>();
   const { name } = route.params || { name: "Chat" };
 
@@ -21,7 +22,7 @@ export default function ChatDetailScreen() {
       </View>
 
       {/* MESSAGES */}
-      <ScrollView style={styles.chatArea} contentContainerStyle={{paddingVertical: 16}}>
+      <ScrollView style={styles.chatArea} contentContainerStyle={{ paddingVertical: 16, paddingBottom: 140 }}>
         
         {/* Left Message */}
         <View style={styles.rowLeft}>
@@ -57,12 +58,17 @@ export default function ChatDetailScreen() {
           </View>
         </View>
       </KeyboardAvoidingView>
+
+      <BottomTabs
+        activeTab="Profile"
+        onNavigate={(routeName) => navigation?.navigate?.(routeName)}
+      />
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#FFFFFF' },
+  container: { flex: 1, backgroundColor: '#FFFFFF', paddingBottom: 80 },
   header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 8, paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: '#F3F4F6' },
   headerTitle: { fontSize: 16, fontWeight: '800', textTransform: 'uppercase' },
   chatArea: { flex: 1, paddingHorizontal: 16 },
