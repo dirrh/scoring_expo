@@ -23,6 +23,10 @@ import BettingDetailScreen from './src/screens/BettingDetailScreen';
 
 // --- GLOBAL NOTIFICATION BUTTON ---
 import { GlobalNotificationButton } from './src/components/GlobalNotificationButton';
+
+// --- CONTEXT PROVIDER (Dôležité pre zdvíhanie tlačidla) ---
+import { NotificationProvider } from './src/context/NotificationContext';
+
 const Stack = createNativeStackNavigator();
 
 const globalAny = global as any;
@@ -44,37 +48,43 @@ export default function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
-        <NavigationContainer>
-          <Stack.Navigator 
-            initialRouteName="Home"
-            screenOptions={{ 
-              headerShown: false,
-              animation: 'none'
-            }}
-          >
-            <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen name="News" component={NewsScreen} />
-            
-            {/* Fallbacks */}
-            <Stack.Screen name="Shop" component={HomeScreen} />
-            
-            {/* --- UPDATED BETTING SCREEN --- */}
-            <Stack.Screen name="Betting" component={BettingScreen} />
-            <Stack.Screen name="BettingDetail" component={BettingDetailScreen} />
+        {/* Celú navigáciu obalíme do NotificationProvider, aby fungoval Context */}
+        <NotificationProvider>
+          <NavigationContainer>
+            <Stack.Navigator 
+              initialRouteName="Home"
+              screenOptions={{ 
+                headerShown: false,
+                animation: 'none'
+              }}
+            >
+              <Stack.Screen name="Home" component={HomeScreen} />
+              <Stack.Screen name="News" component={NewsScreen} />
+              
+              {/* Fallbacks */}
+              <Stack.Screen name="Shop" component={HomeScreen} />
+              
+              {/* --- UPDATED BETTING SCREEN --- */}
+              <Stack.Screen name="Betting" component={BettingScreen} />
+              <Stack.Screen name="BettingDetail" component={BettingDetailScreen} />
 
-            {/* --- PROFILE SECTION --- */}
-            <Stack.Screen name="Profile" component={ProfileScreen} />
-            <Stack.Screen name="ChatDetail" component={ChatDetailScreen} />
+              {/* --- PROFILE SECTION --- */}
+              <Stack.Screen name="Profile" component={ProfileScreen} />
+              <Stack.Screen name="ChatDetail" component={ChatDetailScreen} />
 
-            {/* --- DETAIL SCREENS --- */}
-            <Stack.Screen name="MatchDetail" component={MatchDetailScreen} />
-            <Stack.Screen name="LeagueDetail" component={LeagueDetailScreen} />
-            <Stack.Screen name="TeamDetail" component={TeamDetailScreen} />
-            <Stack.Screen name="PlayerDetail" component={PlayerDetailScreen} />
+              {/* --- DETAIL SCREENS --- */}
+              <Stack.Screen name="MatchDetail" component={MatchDetailScreen} />
+              <Stack.Screen name="LeagueDetail" component={LeagueDetailScreen} />
+              <Stack.Screen name="TeamDetail" component={TeamDetailScreen} />
+              <Stack.Screen name="PlayerDetail" component={PlayerDetailScreen} />
+              
+            </Stack.Navigator>
+
+            {/* Globálne tlačidlo vložené tu, aby plávalo nad všetkým */}
+            <GlobalNotificationButton />
             
-          </Stack.Navigator>
-          <GlobalNotificationButton />
-        </NavigationContainer>
+          </NavigationContainer>
+        </NotificationProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );

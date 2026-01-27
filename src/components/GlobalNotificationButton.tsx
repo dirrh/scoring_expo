@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Modal, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useNotificationPosition } from '../context/NotificationContext';
 
 const NOTIFICATIONS = [
   { 
@@ -30,9 +31,13 @@ const NOTIFICATIONS = [
 export const GlobalNotificationButton = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const insets = useSafeAreaInsets();
+  const { isRaised } = useNotificationPosition();
 
   // Tlačidlo umiestnime nad BottomTabs (cca 80-90px od spodu)
-  const bottomPosition = 90 + insets.bottom; 
+  // Na Activity tab ho zdvihneme kvôli lokálnemu FAB.
+  const baseBottom = 90 + insets.bottom;
+  const raisedBottom = 170 + insets.bottom;
+  const bottomPosition = isRaised ? raisedBottom : baseBottom;
 
   return (
     <>
