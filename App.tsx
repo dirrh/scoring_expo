@@ -21,6 +21,8 @@ import ChatDetailScreen from './src/screens/ChatDetailScreen';
 import BettingScreen from './src/screens/BettingScreen'; 
 import BettingDetailScreen from './src/screens/BettingDetailScreen';
 
+// --- GLOBAL NOTIFICATION BUTTON ---
+import { GlobalNotificationButton } from './src/components/GlobalNotificationButton';
 const Stack = createNativeStackNavigator();
 
 const globalAny = global as any;
@@ -71,6 +73,7 @@ export default function App() {
             <Stack.Screen name="PlayerDetail" component={PlayerDetailScreen} />
             
           </Stack.Navigator>
+          <GlobalNotificationButton />
         </NavigationContainer>
       </SafeAreaProvider>
     </GestureHandlerRootView>

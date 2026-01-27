@@ -132,16 +132,13 @@ function TabBar({ activeTab, onChange }: { activeTab: TabId; onChange: (id: TabI
 }
 
 function FloatingButtons() {
+  const navigation = useNavigation<any>();
   return (
     <View style={styles.fabContainer}>
-      <Pressable style={[styles.fab, styles.fabPurple]}>
-        <Ionicons name="notifications" size={24} color="white" />
-        <View style={styles.fabBadge}>
-          <Text style={styles.fabBadgeText}>3</Text>
-        </View>
-      </Pressable>
-
-      <Pressable style={[styles.fab, styles.fabBlue]}>
+      <Pressable
+        style={[styles.fab, styles.fabBlue]}
+        onPress={() => navigation.navigate("Profile", { initialTab: "chats" })}
+      >
         <Ionicons name="chatbubble-ellipses" size={24} color="white" />
         <View style={styles.fabBadge}>
           <Text style={styles.fabBadgeText}>1</Text>

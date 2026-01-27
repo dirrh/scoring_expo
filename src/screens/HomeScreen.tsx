@@ -201,17 +201,6 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
         </View>
       </View>
 
-      {/* Floating Notification Button */}
-      <View 
-        style={{ elevation: 5 }}
-        className="absolute bottom-28 right-6 bg-purple-600 p-4 rounded-full shadow-lg shadow-purple-500"
-      >
-        <Ionicons name="notifications" size={24} color="white" />
-        <View className="absolute top-0 right-0 bg-red-500 w-5 h-5 rounded-full items-center justify-center border-2 border-white">
-          <Text className="text-[10px] text-white font-bold">3</Text>
-        </View>
-      </View>
-
       <BottomTabs
         activeTab="Home"
         onNavigate={(routeName) => navigation?.navigate(routeName)}

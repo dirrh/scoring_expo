@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView, StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { useRoute } from '@react-navigation/native';
 import { BottomTabs } from '../components/BottomTabs';
 
 // Importy tabov (vytvoríme ich nižšie)
+import { ProfileActivityTab } from '../components/profile/ProfileActivityTab';
 import { ProfileSocialTab } from '../components/profile/ProfileSocialTab';
 import { ProfileChatsTab } from '../components/profile/ProfileChats.Tab';
 import { ProfileGroupsTab } from '../components/profile/ProfileGroupsTab';
@@ -18,8 +20,18 @@ const TABS = [
   { id: 'favorites', label: 'Favorites' },
 ];
 
+type ProfileTabId = (typeof TABS)[number]['id'];
+
 export default function ProfileScreen({ navigation }: any) {
-  const [activeTab, setActiveTab] = useState('social'); // Default tab
+  const route = useRoute<any>();
+  const [activeTab, setActiveTab] = useState<ProfileTabId>('social'); // Default tab
+
+  useEffect(() => {
+    const requestedTab = route.params?.initialTab as ProfileTabId | undefined;
+    if (requestedTab && TABS.some((tab) => tab.id === requestedTab)) {
+      setActiveTab(requestedTab);
+    }
+  }, [route.params?.initialTab]);
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
@@ -81,7 +93,7 @@ export default function ProfileScreen({ navigation }: any) {
         {activeTab === 'chats' && <ProfileChatsTab />}
         {activeTab === 'groups' && <ProfileGroupsTab />}
         {activeTab === 'favorites' && <ProfileFavoritesTab />}
-        {activeTab === 'activity' && <View style={{padding: 20}}><Text>Activity Coming Soon</Text></View>}
+        {activeTab === 'activity' && <ProfileActivityTab />}
       </View>
 
       <BottomTabs
