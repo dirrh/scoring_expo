@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useOptionalNavigation } from "../hooks/useOptionalNavigation";
 
 type TimelineEvent = {
   id: number | string;
@@ -68,7 +68,7 @@ export function MatchTimelineTab({
 }
 
 function TimelineEventRow({ event }: { event: TimelineEvent }) {
-  const navigation = useNavigation<any>();
+  const navigation = useOptionalNavigation();
   const isHome = event.team === "home";
 
   const getIcon = () => {
@@ -85,7 +85,7 @@ function TimelineEventRow({ event }: { event: TimelineEvent }) {
   };
 
   const goToPlayer = () => {
-    navigation.navigate("PlayerDetail");
+    navigation?.navigate?.("PlayerDetail");
   };
 
   return (

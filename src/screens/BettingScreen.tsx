@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Pressable, StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { Image } from 'expo-image';
 import { BottomTabs } from '../components/BottomTabs';
 
 // 1. IMPORT DATA
@@ -11,11 +12,11 @@ import ALL_MATCHES from '../data/matches.json';
 const SPORTS = ["Football", "Basketball", "Hockey", "Tennis", "Baseball", "MMA"];
 
 const LEAGUES = [
-  { id: 1, name: "Premier League" },
-  { id: 2, name: "Champions League" },
-  { id: 3, name: "Serie A" },
-  { id: 4, name: "La Liga" },
-  { id: 5, name: "Bundesliga" },
+  { id: 1, name: "Premier League", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/f/f2/Premier_League_Logo.svg/120px-Premier_League_Logo.svg.png" },
+  { id: 2, name: "Champions League", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/b/bf/UEFA_Champions_League_logo_2.svg/120px-UEFA_Champions_League_logo_2.svg.png" },
+  { id: 3, name: "Serie A", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Serie_A_logo_2022.svg/120px-Serie_A_logo_2022.svg.png" },
+  { id: 4, name: "La Liga", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/9/92/La_Liga_logo_2016.svg/120px-La_Liga_logo_2016.svg.png" },
+  { id: 5, name: "Bundesliga", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/d/df/Bundesliga_logo_%282017%29.svg/120px-Bundesliga_logo_%282017%29.svg.png" },
 ];
 
 export default function BettingScreen({ navigation }: any) {
@@ -64,16 +65,24 @@ export default function BettingScreen({ navigation }: any) {
                  style={styles.leagueItem}
                  onPress={() => setSelectedLeague(league.id)} // <--- CLICK CHANGES LEAGUE
                >
-                  <View style={[
-                    styles.leagueCircle, 
-                    isActive && styles.leagueCircleActive // Highlight active league
-                  ]}>
-                     <Ionicons 
-                        name="trophy" 
-                        size={20} 
-                        color={isActive ? "#FFFFFF" : "#6B7280"} // White icon if active
-                     />
-                  </View>
+                <View style={[
+                  styles.leagueCircle,
+                  isActive && styles.leagueCircleActive
+                ]}>
+                  {league.logo ? (
+                    <Image
+                      source={{ uri: league.logo }}
+                      style={styles.leagueLogo}
+                      contentFit="contain"
+                    />
+                  ) : (
+                    <Ionicons
+                      name="trophy"
+                      size={20}
+                      color={isActive ? "#FFFFFF" : "#6B7280"}
+                    />
+                  )}
+                </View>
                   <Text style={[
                     styles.leagueName, 
                     isActive && { color: '#111827', fontWeight: '900' }
@@ -110,7 +119,13 @@ export default function BettingScreen({ navigation }: any) {
                 <View style={styles.teamsRow}>
                    {/* Home */}
                    <View style={styles.teamSide}>
-                      <View style={styles.teamLogo}><Ionicons name="shield" size={24} color="#3B82F6"/></View> 
+                      <View style={styles.teamLogo}>
+                        {match.home.logo ? (
+                          <Image source={{ uri: match.home.logo }} style={styles.teamLogoImg} contentFit="contain" />
+                        ) : (
+                          <Ionicons name="shield" size={20} color="#3B82F6" />
+                        )}
+                      </View>
                       <Text style={styles.teamName}>{match.home.name}</Text>
                    </View>
 
@@ -127,7 +142,13 @@ export default function BettingScreen({ navigation }: any) {
                    {/* Away */}
                    <View style={styles.teamSide}>
                       <Text style={styles.teamName}>{match.away.name}</Text>
-                      <View style={styles.teamLogo}><Ionicons name="shield" size={24} color="#EF4444"/></View>
+                      <View style={styles.teamLogo}>
+                        {match.away.logo ? (
+                          <Image source={{ uri: match.away.logo }} style={styles.teamLogoImg} contentFit="contain" />
+                        ) : (
+                          <Ionicons name="shield" size={20} color="#EF4444" />
+                        )}
+                      </View>
                    </View>
                 </View>
 
@@ -201,34 +222,36 @@ const styles = StyleSheet.create({
   },
 
   // Leagues
-  leaguesContainer: { paddingLeft: 16, marginTop: 16, marginBottom: 24 },
-  leagueItem: { alignItems: 'center', marginRight: 20, width: 60 },
+  leaguesContainer: { paddingLeft: 16, marginTop: 8, marginBottom: 20 },
+  leagueItem: { alignItems: 'center', marginRight: 16, width: 70 },
   leagueCircle: {
-    width: 56, height: 56, borderRadius: 28, backgroundColor: '#FFFFFF',
+    width: 60, height: 60, borderRadius: 30, backgroundColor: '#FFFFFF',
     alignItems: 'center', justifyContent: 'center', marginBottom: 8,
-    shadowColor: "#000", shadowOpacity: 0.05, shadowRadius: 5, elevation: 2
+    shadowColor: "#000", shadowOpacity: 0.05, shadowRadius: 6, elevation: 2
   },
   leagueCircleActive: {
-    backgroundColor: '#4B0082', // Active league color
+    backgroundColor: '#111827',
   },
+  leagueLogo: { width: 32, height: 32 },
   leagueName: { fontSize: 9, fontWeight: '700', textAlign: 'center', color: '#6B7280' },
 
   // Matches
   matchesList: { paddingHorizontal: 16 },
   matchCard: {
     backgroundColor: '#FFFFFF',
-    borderRadius: 24,
+    borderRadius: 22,
     padding: 16,
     marginBottom: 16,
-    shadowColor: "#000", shadowOpacity: 0.05, shadowRadius: 10, elevation: 3
+    shadowColor: "#000", shadowOpacity: 0.06, shadowRadius: 12, elevation: 3
   },
   cardHeader: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 16 },
   volText: { fontSize: 12, color: '#9CA3AF', fontWeight: '500' },
   
-  teamsRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 },
+  teamsRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18 },
   teamSide: { flexDirection: 'row', alignItems: 'center' },
-  teamLogo: { width: 32, height: 32, borderRadius: 16, backgroundColor: '#F3F4F6', alignItems:'center', justifyContent:'center' }, 
-  teamName: { fontSize: 14, fontWeight: '900', color: '#111827', textTransform: 'uppercase', marginHorizontal: 8 },
+  teamLogo: { width: 32, height: 32, borderRadius: 16, backgroundColor: '#F3F4F6', alignItems:'center', justifyContent:'center', overflow: 'hidden' },
+  teamLogoImg: { width: 22, height: 22 },
+  teamName: { fontSize: 13, fontWeight: '900', color: '#111827', textTransform: 'uppercase', marginHorizontal: 8 },
   
   scoreInfo: { alignItems: 'center' },
   scoreText: { fontSize: 24, fontWeight: '900', marginBottom: 4 },
@@ -240,10 +263,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row', 
     justifyContent: 'space-between', 
     alignItems: 'center',
-    backgroundColor: '#FFFFFF', 
+    backgroundColor: '#FFFFFF',
     borderWidth: 1, 
     borderColor: '#E5E7EB',
-    paddingVertical: 10,
+    paddingVertical: 9,
     paddingHorizontal: 12,
     borderRadius: 12,
     marginHorizontal: 4

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
-import { useNavigation } from "@react-navigation/native";
+import { useOptionalNavigation } from "../hooks/useOptionalNavigation";
 
 const SQUAD_DATA = [
   { title: "COACH", players: [{ number: "", name: "Arne Slot" }] },
@@ -9,7 +9,7 @@ const SQUAD_DATA = [
 ];
 
 export function TeamSquadTab() {
-  const navigation = useNavigation<any>();
+  const navigation = useOptionalNavigation();
 
   return (
     <ScrollView style={{flex: 1, padding: 16}} showsVerticalScrollIndicator={false}>
@@ -20,7 +20,7 @@ export function TeamSquadTab() {
             {section.players.map((player, pIndex) => (
               <Pressable 
                 key={pIndex} 
-                onPress={() => navigation.navigate("PlayerDetail")}
+                onPress={() => navigation?.navigate?.("PlayerDetail")}
                 style={{flexDirection: 'row', alignItems: 'center', paddingVertical: 12}}
               >
                 <View style={{width: 40, height: 40, borderRadius: 20, backgroundColor: '#E5E7EB', alignItems: 'center', justifyContent: 'center', marginRight: 12}}>

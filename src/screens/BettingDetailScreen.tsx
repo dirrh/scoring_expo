@@ -2,16 +2,17 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Pressable, Dimensions, Image, Modal, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useOptionalNavigation } from '../hooks/useOptionalNavigation';
+import { useOptionalRoute } from '../hooks/useOptionalRoute';
 import Svg, { Path, Line, Text as SvgText, Circle } from 'react-native-svg';
 
 const TIME_FILTERS = ["1H", "6H", "1D", "1W", "1M", "ALL"];
 const { width, height } = Dimensions.get('window');
 
 export default function BettingDetailScreen() {
-  const navigation = useNavigation();
-  const route = useRoute<any>();
-  const { match } = route.params || {};
+  const navigation = useOptionalNavigation();
+  const route = useOptionalRoute<{ match?: any }>();
+  const match = route?.params?.match;
 
   const [activeFilter, setActiveFilter] = useState("1D");
 
@@ -44,7 +45,7 @@ export default function BettingDetailScreen() {
       
       {/* --- HEADER --- */}
       <View style={styles.header}>
-        <Pressable onPress={() => navigation.goBack()} style={styles.iconBtn}>
+        <Pressable onPress={() => navigation?.goBack?.()} style={styles.iconBtn}>
           <Ionicons name="chevron-back" size={24} color="#111827" />
         </Pressable>
         

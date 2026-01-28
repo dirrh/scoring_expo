@@ -3,7 +3,8 @@ import { View, Text, StyleSheet, Pressable, ScrollView, StatusBar, Platform } fr
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useOptionalNavigation } from '../hooks/useOptionalNavigation';
+import { useOptionalRoute } from '../hooks/useOptionalRoute';
 
 // Import pod-komponentov (vytvoríme ich nižšie)
 import { SimpleTable } from '../components/SimpleTable'; // Použijeme tú istú tabuľku
@@ -24,8 +25,8 @@ const TABS = [
 ] as const;
 
 export default function LeagueDetailScreen() {
-  const navigation = useNavigation();
-  const route = useRoute();
+  const navigation = useOptionalNavigation();
+  const route = useOptionalRoute();
   const [activeTab, setActiveTab] = useState<'table' | 'schedule' | 'news'>('table');
   
   // Tu by si reálne vytiahol ID ligy z route.params
@@ -39,7 +40,7 @@ export default function LeagueDetailScreen() {
       <View style={styles.header}>
         <View style={styles.headerTopRow}>
           <Pressable 
-            onPress={() => navigation.goBack()}
+            onPress={() => navigation?.goBack?.()}
             style={({ pressed }) => [styles.iconButton, pressed && { opacity: 0.5 }]}
           >
             <Ionicons name="chevron-back" size={24} color="black" />

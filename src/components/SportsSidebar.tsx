@@ -14,7 +14,27 @@ export const SportSidebar = () => {
       </TouchableOpacity>
 
       <TouchableOpacity className="p-3 mb-4">
+        <Ionicons name="basketball" size={24} color="#9ca3af" />
+      </TouchableOpacity>
+
+      <TouchableOpacity className="p-3 mb-4">
+        <MaterialCommunityIcons name="tennis" size={24} color="#9ca3af" />
+      </TouchableOpacity>
+
+      <TouchableOpacity className="p-3 mb-4">
         <FontAwesome5 name="hockey-puck" size={20} color="#9ca3af" />
+      </TouchableOpacity>
+
+      <TouchableOpacity className="p-3 mb-4">
+        <MaterialCommunityIcons name="baseball-bat" size={22} color="#9ca3af" />
+      </TouchableOpacity>
+
+      <TouchableOpacity className="p-3 mb-4">
+        <FontAwesome5 name="football-ball" size={20} color="#9ca3af" />
+      </TouchableOpacity>
+
+      <TouchableOpacity className="p-3 mb-4">
+        <MaterialCommunityIcons name="volleyball" size={22} color="#9ca3af" />
       </TouchableOpacity>
     </View>
   );

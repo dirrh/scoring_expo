@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Pressable, ScrollView, StatusBar } from 'react-
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
-import { useNavigation } from '@react-navigation/native';
+import { useOptionalNavigation } from '../hooks/useOptionalNavigation';
 
 // Importy komponentov (vytvoríme ich nižšie)
 import { PlayerInfoTab } from '../components/PlayerInfoTab';
@@ -24,7 +24,7 @@ const TABS = [
 ] as const;
 
 export default function PlayerDetailScreen() {
-  const navigation = useNavigation();
+  const navigation = useOptionalNavigation();
   const [activeTab, setActiveTab] = useState<'info' | 'statistics' | 'career'>('info');
 
   return (
@@ -35,7 +35,7 @@ export default function PlayerDetailScreen() {
       <View style={styles.header}>
         <View style={styles.headerTopRow}>
           <Pressable 
-            onPress={() => navigation.goBack()}
+            onPress={() => navigation?.goBack?.()}
             style={({ pressed }) => [styles.iconButton, pressed && { opacity: 0.5 }]}
           >
             <Ionicons name="chevron-back" size={24} color="black" />

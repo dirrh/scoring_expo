@@ -3,18 +3,19 @@ import { View, Text, StyleSheet, ScrollView, TextInput, KeyboardAvoidingView, Pl
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { BottomTabs } from '../components/BottomTabs';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useOptionalNavigation } from '../hooks/useOptionalNavigation';
+import { useOptionalRoute } from '../hooks/useOptionalRoute';
 
 export default function ChatDetailScreen() {
-  const navigation = useNavigation<any>();
-  const route = useRoute<any>();
-  const { name } = route.params || { name: "Chat" };
+  const navigation = useOptionalNavigation();
+  const route = useOptionalRoute<{ name?: string }>();
+  const name = route?.params?.name ?? "Chat";
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
       {/* HEADER */}
       <View style={styles.header}>
-        <Pressable onPress={() => navigation.goBack()} style={{padding: 8}}>
+        <Pressable onPress={() => navigation?.goBack?.()} style={{padding: 8}}>
           <Ionicons name="chevron-back" size={24} color="black" />
         </Pressable>
         <Text style={styles.headerTitle}>{name}</Text>

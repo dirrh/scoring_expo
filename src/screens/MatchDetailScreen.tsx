@@ -3,8 +3,9 @@ import { View, Text, ScrollView, Pressable, StatusBar, StyleSheet } from "react-
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Image } from "expo-image";
-import { useNavigation } from "@react-navigation/native"; // <--- Import
+import { useOptionalNavigation } from "../hooks/useOptionalNavigation";
 
+// Komponenty (predpokladám, že ich máš vytvorené v priečinku components)
 import { SimpleTable } from "../components/SimpleTable";
 import { MatchTimelineTab } from "../components/MatchTimelineTab";
 import { MatchLineupsTab } from "../components/MatchLineupsTab";
@@ -59,16 +60,22 @@ type TabId = (typeof TABS)[number]["id"];
 export default function MatchDetailScreen() {
   const [activeTab, setActiveTab] = useState<TabId>("timeline");
   const match = useMemo(() => MOCK_MATCH, []);
-  const navigation = useNavigation(); // <--- Hook pre navigáciu (Späť)
+  const navigation = useOptionalNavigation();
 
   return (
     <SafeAreaView style={styles.container} edges={["top"]}>
       <StatusBar barStyle="dark-content" />
 
-      <HeaderBar onBack={() => navigation.goBack()} /> 
+      {/* Header s navigáciou späť */}
+      <HeaderBar onBack={() => navigation?.goBack?.()} />
+      
+      {/* Informácie o zápase */}
       <MatchHeaderInfo data={match} />
+      
+      {/* Prepínač tabov */}
       <TabBar activeTab={activeTab} onChange={setActiveTab} />
 
+      {/* Obsah tabov */}
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {activeTab === "timeline" && (
           <MatchTimelineTab loading={false} errorMessage={null} events={match.timeline} />
@@ -83,8 +90,12 @@ export default function MatchDetailScreen() {
         )}
         {activeTab === "stats" && <MatchStatsTab />}
         {activeTab === "watch" && <MatchWatchTab />}
+        
+        {/* Padding dole aby obsah nebol prekrytý tlačidlami */}
+        <View style={{ height: 100 }} />
       </ScrollView>
 
+      {/* Plávajúce tlačidlo (Chat) */}
       <FloatingButtons />
     </SafeAreaView>
   );
@@ -132,12 +143,12 @@ function TabBar({ activeTab, onChange }: { activeTab: TabId; onChange: (id: TabI
 }
 
 function FloatingButtons() {
-  const navigation = useNavigation<any>();
+  const navigation = useOptionalNavigation();
   return (
     <View style={styles.fabContainer}>
       <Pressable
         style={[styles.fab, styles.fabBlue]}
-        onPress={() => navigation.navigate("Profile", { initialTab: "chats" })}
+        onPress={() => navigation?.navigate?.("Profile", { initialTab: "chats" })}
       >
         <Ionicons name="chatbubble-ellipses" size={24} color="white" />
         <View style={styles.fabBadge}>
@@ -148,19 +159,18 @@ function FloatingButtons() {
   );
 }
 
-// --- UPRAVENÝ HEADER S KLIKANÍM ---
 function MatchHeaderInfo({ data }: { data: MatchDetailData }) {
-  const navigation = useNavigation<any>();
+  const navigation = useOptionalNavigation();
 
   const openTeamDetail = () => {
-    navigation.navigate("TeamDetail");
+    navigation?.navigate?.("TeamDetail");
   };
 
   return (
     <View style={styles.scoreCard}>
       <View style={styles.scoreRow}>
         
-        {/* DOMÁCI - KLIKATEĽNÝ */}
+        {/* DOMÁCI */}
         <Pressable onPress={openTeamDetail} style={styles.teamColumn}>
           <View style={styles.teamLogoWrap}>
             <Ionicons name="star-outline" size={20} color="black" style={styles.teamStarLeft} />
@@ -174,6 +184,7 @@ function MatchHeaderInfo({ data }: { data: MatchDetailData }) {
           ))}
         </Pressable>
 
+        {/* SKÓRE STRED */}
         <View style={styles.scoreCenter}>
           <Text style={styles.scoreText}>
             {data.homeTeam.score} - {data.awayTeam.score}
@@ -182,7 +193,7 @@ function MatchHeaderInfo({ data }: { data: MatchDetailData }) {
           <Ionicons name="football-outline" size={24} color="#9ca3af" style={{ marginTop: 12 }} />
         </View>
 
-        {/* HOSTIA - KLIKATEĽNÝ */}
+        {/* HOSTIA */}
         <Pressable onPress={openTeamDetail} style={styles.teamColumn}>
           <View style={styles.teamLogoWrap}>
             {data.awayTeam.logo ? (
@@ -260,7 +271,14 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   content: { flex: 1 },
-  fabContainer: { position: "absolute", right: 24, bottom: 32, gap: 16 },
+  
+  // Plávajúce tlačidlo (Chat)
+  fabContainer: { 
+    position: "absolute", 
+    right: 24, 
+    bottom: 32, // <--- Toto je dole
+    gap: 16 
+  },
   fab: {
     width: 56,
     height: 56,
@@ -269,7 +287,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     elevation: 5,
   },
-  fabPurple: { backgroundColor: "#9333ea" },
   fabBlue: { backgroundColor: "#3b82f6" },
   fabBadge: {
     position: "absolute",

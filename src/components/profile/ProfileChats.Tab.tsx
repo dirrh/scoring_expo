@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Pressable, TextInput } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useOptionalNavigation } from '../../hooks/useOptionalNavigation';
 import { Ionicons } from '@expo/vector-icons';
 
 const CHATS = [
@@ -11,7 +11,7 @@ const CHATS = [
 ];
 
 export function ProfileChatsTab() {
-  const navigation = useNavigation<any>();
+  const navigation = useOptionalNavigation();
 
   return (
     <View style={styles.container}>
@@ -24,7 +24,7 @@ export function ProfileChatsTab() {
         {CHATS.map((chat) => (
           <Pressable 
             key={chat.id} 
-            onPress={() => navigation.navigate('ChatDetail', { name: chat.name })}
+            onPress={() => navigation?.navigate?.('ChatDetail', { name: chat.name })}
             style={styles.chatRow}
           >
             <View style={styles.avatar}>{/* Initials or Img */}<Text style={{fontWeight:'bold'}}>{chat.name[0]}</Text></View>

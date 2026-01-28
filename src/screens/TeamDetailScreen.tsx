@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Pressable, ScrollView, StatusBar, Image as RNIm
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
-import { useNavigation } from '@react-navigation/native';
+import { useOptionalNavigation } from '../hooks/useOptionalNavigation';
 
 // Importy komponentov (Uisti sa, že ich máš vytvorené - kódy sú nižšie)
 import { SimpleTable } from '../components/SimpleTable'; 
@@ -28,7 +28,7 @@ const TABS = [
 ] as const;
 
 export default function TeamDetailScreen() {
-  const navigation = useNavigation();
+  const navigation = useOptionalNavigation();
   const [activeTab, setActiveTab] = useState<'table' | 'squad' | 'schedule' | 'statistics' | 'news'>('table');
 
   return (
@@ -39,7 +39,7 @@ export default function TeamDetailScreen() {
       <View style={styles.header}>
         <View style={styles.headerTopRow}>
           <Pressable 
-            onPress={() => navigation.goBack()}
+            onPress={() => navigation?.goBack?.()}
             style={({ pressed }) => [styles.iconButton, pressed && { opacity: 0.5 }]}
           >
             <Ionicons name="chevron-back" size={24} color="black" />

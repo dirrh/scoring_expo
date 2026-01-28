@@ -35,8 +35,8 @@ export const GlobalNotificationButton = () => {
 
   // Tlačidlo umiestnime nad BottomTabs (cca 80-90px od spodu)
   // Na Activity tab ho zdvihneme kvôli lokálnemu FAB.
-  const baseBottom = 90 + insets.bottom;
-  const raisedBottom = 170 + insets.bottom;
+  const baseBottom = 64 + insets.bottom;
+  const raisedBottom = 144 + insets.bottom;
   const bottomPosition = isRaised ? raisedBottom : baseBottom;
 
   return (

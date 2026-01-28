@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, ScrollView, Pressable, type DimensionValue } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useOptionalNavigation } from "../hooks/useOptionalNavigation";
 
 // --- TYPY ---
 type PlayerPos = {
@@ -145,10 +145,10 @@ export function MatchLineupsTab() {
 
 // Komponent pre hráča na ihrisku
 function PlayerMarker({ player }: { player: PlayerPos }) {
-  const navigation = useNavigation<any>();
+  const navigation = useOptionalNavigation();
   return (
     <Pressable 
-      onPress={() => navigation.navigate("PlayerDetail")}
+      onPress={() => navigation?.navigate?.("PlayerDetail")}
       style={[styles.playerMarker, { top: player.top as DimensionValue, left: player.left as DimensionValue }]}
     >
       <View style={styles.playerCircle} />
@@ -161,11 +161,11 @@ function PlayerMarker({ player }: { player: PlayerPos }) {
 
 // Komponent pre náhradníka
 function SubItem({ sub, align }: { sub: SubPlayer, align: 'left' | 'right' }) {
-  const navigation = useNavigation<any>();
+  const navigation = useOptionalNavigation();
   const isLeft = align === 'left';
   return (
     <Pressable 
-      onPress={() => navigation.navigate("PlayerDetail")}
+      onPress={() => navigation?.navigate?.("PlayerDetail")}
       style={[styles.subRow, isLeft ? styles.subRowLeft : styles.subRowRight]}
     >
       {isLeft && <View style={styles.avatarCircleSmall} />}
