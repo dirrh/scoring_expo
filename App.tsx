@@ -21,10 +21,11 @@ import ChatDetailScreen from './src/screens/ChatDetailScreen';
 import BettingScreen from './src/screens/BettingScreen'; 
 import BettingDetailScreen from './src/screens/BettingDetailScreen';
 
-// --- GLOBAL NOTIFICATION BUTTON ---
+// --- GLOBAL COMPONENTS ---
 import { GlobalNotificationButton } from './src/components/GlobalNotificationButton';
-
-// --- CONTEXT PROVIDER (Dôležité pre zdvíhanie tlačidla) ---
+import { SideGroupsDrawer } from './src/components/SideGroupsDrawer'; 
+import { SideChatsDrawer } from './src/components/SideChatsDrawer';
+// --- CONTEXT PROVIDER ---
 import { NotificationProvider } from './src/context/NotificationContext';
 
 const Stack = createNativeStackNavigator();
@@ -64,7 +65,7 @@ export default function App() {
               {/* Fallbacks */}
               <Stack.Screen name="Shop" component={HomeScreen} />
               
-              {/* --- UPDATED BETTING SCREEN --- */}
+              {/* --- BETTING SECTION --- */}
               <Stack.Screen name="Betting" component={BettingScreen} />
               <Stack.Screen name="BettingDetail" component={BettingDetailScreen} />
 
@@ -80,9 +81,14 @@ export default function App() {
               
             </Stack.Navigator>
 
-            {/* Globálne tlačidlo vložené tu, aby plávalo nad všetkým */}
-            <GlobalNotificationButton />
+            {/* --- GLOBÁLNE KOMPONENTY (Plávajú nad všetkým) --- */}
             
+            {/* 1. Notifikačné tlačidlo (Fialové) */}
+            <GlobalNotificationButton />
+
+            {/* 2. Bočný panel skupín (Vysúvacie menu) */}
+            <SideGroupsDrawer />
+            <SideChatsDrawer />
           </NavigationContainer>
         </NotificationProvider>
       </SafeAreaProvider>

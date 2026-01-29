@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Pressable, Modal, TextInput, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useNotificationPosition } from '../../context/NotificationContext';
 
 type ActivityPost = {
   id: string;
@@ -18,12 +17,7 @@ const AUTHOR_HANDLE = '@mato123';
 export const ProfileActivityTab = () => {
   const [composerVisible, setComposerVisible] = useState(false);
   const [draftText, setDraftText] = useState('');
-  const { setIsRaised } = useNotificationPosition();
-
-  useEffect(() => {
-    setIsRaised(true);
-    return () => setIsRaised(false);
-  }, [setIsRaised]);
+  // Positioning handled by ProfileScreen based on active tab.
 
   const posts = useMemo<ActivityPost[]>(
     () => [
@@ -197,7 +191,7 @@ const styles = StyleSheet.create({
   fab: {
     position: 'absolute',
     right: 20,
-    bottom: 5,
+    bottom: 20,
     width: 56,
     height: 56,
     borderRadius: 28,

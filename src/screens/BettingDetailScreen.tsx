@@ -311,7 +311,7 @@ const styles = StyleSheet.create({
   scoreTextBig: { fontSize: 32, fontWeight: '900', color: '#111827', lineHeight: 36 },
   timeTextBig: { fontSize: 11, fontWeight: '700', color: '#6B7280', textTransform: 'uppercase', marginTop: 4 },
   
-  basicOddsRow: { flexDirection: 'row', justifyContent: 'space-between', borderTopWidth: 1, borderTopColor: '#F3F4F6', paddingTop: 16 },
+  basicOddsRow: { flexDirection: 'row', justifyContent: 'space-between', paddingTop: 16 },
   basicOddItem: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#F9FAFB', paddingVertical: 8, paddingHorizontal: 16, borderRadius: 12, flex: 1, justifyContent: 'center', marginHorizontal: 4 },
   boLabel: { fontSize: 12, color: '#9CA3AF', fontWeight: '600', marginRight: 6 },
   boValue: { fontSize: 14, fontWeight: '800', color: '#111827' },
@@ -322,7 +322,7 @@ const styles = StyleSheet.create({
   ticketRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 },
   ticketBtn: { flex: 1, height: 48, borderRadius: 14, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginHorizontal: 4, shadowColor: "#000", shadowOpacity: 0.1, shadowRadius: 3, elevation: 2 },
   btnBlue: { backgroundColor: '#3B82F6' },
-  btnWhite: { backgroundColor: '#FFFFFF', borderWidth: 1, borderColor: '#E5E7EB' },
+  btnWhite: { backgroundColor: '#FFFFFF' },
   btnRed: { backgroundColor: '#EF4444' },
   btnTextWhite: { color: 'white', fontWeight: '800', fontSize: 14 },
   btnTextDark: { color: '#111827', fontWeight: '800', fontSize: 14 },
@@ -349,7 +349,7 @@ const styles = StyleSheet.create({
   teamPillText: { color: 'white', fontWeight: '700', fontSize: 12, textTransform: 'uppercase' },
   
   amountSelector: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 24 },
-  circleBtn: { width: 48, height: 48, borderRadius: 24, backgroundColor: '#F9FAFB', alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: '#F3F4F6' },
+  circleBtn: { width: 48, height: 48, borderRadius: 24, backgroundColor: '#F9FAFB', alignItems: 'center', justifyContent: 'center' },
   amountText: { fontSize: 48, fontWeight: '900', color: '#111827', marginHorizontal: 32, fontVariant: ['tabular-nums'] },
   
   winInfo: { flexDirection: 'row', alignItems: 'center', marginBottom: 24 },
@@ -357,7 +357,7 @@ const styles = StyleSheet.create({
   winValue: { fontSize: 16, fontWeight: '800', color: '#22C55E' },
   
   quickAddRow: { flexDirection: 'row', width: '100%', justifyContent: 'space-between', marginBottom: 32 },
-  quickBtn: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingVertical: 10, borderWidth: 1, borderColor: '#E5E7EB', borderRadius: 12, marginHorizontal: 4 },
+  quickBtn: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingVertical: 10, borderRadius: 12, marginHorizontal: 4 },
   quickBtnText: { fontSize: 14, fontWeight: '700', color: '#111827' },
   
   mainBuyBtn: { width: '100%', backgroundColor: '#0EA5E9', paddingVertical: 18, borderRadius: 20, alignItems: 'center', shadowColor: "#0EA5E9", shadowOpacity: 0.3, shadowRadius: 10, elevation: 5 },

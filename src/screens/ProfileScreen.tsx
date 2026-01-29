@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useRoute } from '@react-navigation/native';
 import { BottomTabs } from '../components/BottomTabs';
+import { useNotificationPosition } from '../context/NotificationContext';
 
 // Importy tabov (vytvoríme ich nižšie)
 import { ProfileActivityTab } from '../components/profile/ProfileActivityTab';
@@ -25,6 +26,7 @@ type ProfileTabId = (typeof TABS)[number]['id'];
 export default function ProfileScreen({ navigation }: any) {
   const route = useRoute<any>();
   const [activeTab, setActiveTab] = useState<ProfileTabId>('social'); // Default tab
+  const { setIsRaised } = useNotificationPosition();
 
   useEffect(() => {
     const requestedTab = route.params?.initialTab as ProfileTabId | undefined;
@@ -32,6 +34,11 @@ export default function ProfileScreen({ navigation }: any) {
       setActiveTab(requestedTab);
     }
   }, [route.params?.initialTab]);
+
+  useEffect(() => {
+    setIsRaised(activeTab === 'activity');
+    return () => setIsRaised(false);
+  }, [activeTab, setIsRaised]);
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
