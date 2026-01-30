@@ -6,7 +6,8 @@ import {
   Dimensions, 
   TextInput, 
   ScrollView, 
-  Pressable 
+  Pressable,
+  Image
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { 
@@ -32,12 +33,12 @@ const SPRING_CONFIG = {
 
 // --- MOCK DATA ---
 const GROUPS = [
-  { id: '1', name: 'My Friends Group', msg: 'You: That second goal was...', time: '20:07', initial: 'MFG', active: true },
-  { id: '2', name: 'Premier League Room', msg: 'Ten gól v 67. minúte rozho...', time: '20:06', initial: 'PLR', active: false },
-  { id: '3', name: 'Defense Football Debate', msg: 'Haaland is just on another...', time: '19:07', initial: 'DFD', active: false },
-  { id: '4', name: 'Team Management Space', msg: 'You: Stats look much bette...', time: '17:07', initial: 'TMS', active: true },
-  { id: '5', name: 'Transfer Rumors', msg: 'Referee was terrible in the...', time: 'SAT', initial: 'TR', active: true },
-  { id: '6', name: 'Xtra Club Supporters', msg: 'You: Are you joining the Pr...', time: '6.12.', initial: 'XCS', active: true },
+  { id: '1', name: 'My Friends Group', msg: 'You: That second goal was...', time: '20:07', initial: 'MFG', active: true, avatar: 'https://randomuser.me/api/portraits/men/12.jpg' },
+  { id: '2', name: 'Premier League Room', msg: 'Ten gól v 67. minúte rozho...', time: '20:06', initial: 'PLR', active: false, avatar: 'https://randomuser.me/api/portraits/women/21.jpg' },
+  { id: '3', name: 'Defense Football Debate', msg: 'Haaland is just on another...', time: '19:07', initial: 'DFD', active: false, avatar: 'https://randomuser.me/api/portraits/men/36.jpg' },
+  { id: '4', name: 'Team Management Space', msg: 'You: Stats look much bette...', time: '17:07', initial: 'TMS', active: true, avatar: 'https://randomuser.me/api/portraits/women/68.jpg' },
+  { id: '5', name: 'Transfer Rumors', msg: 'Referee was terrible in the...', time: 'SAT', initial: 'TR', active: true, avatar: 'https://randomuser.me/api/portraits/men/41.jpg' },
+  { id: '6', name: 'Xtra Club Supporters', msg: 'You: Are you joining the Pr...', time: '6.12.', initial: 'XCS', active: true, avatar: 'https://randomuser.me/api/portraits/men/76.jpg' },
 ];
 
 export const SideGroupsDrawer = () => {
@@ -116,9 +117,7 @@ export const SideGroupsDrawer = () => {
           <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }}>
             {GROUPS.map((group) => (
               <View key={group.id} style={styles.groupItem}>
-                <View style={styles.avatar}>
-                  <Text style={styles.avatarText}>{group.initial}</Text>
-                </View>
+                <Image source={{ uri: group.avatar }} style={styles.avatar} />
                 <View style={styles.groupInfo}>
                   <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                     <Text style={styles.groupName}>{group.name}</Text>
@@ -196,7 +195,7 @@ const styles = StyleSheet.create({
   searchContainer: { flex: 1, flexDirection: 'row', alignItems: 'center', backgroundColor: '#F9FAFB', borderRadius: 24, paddingHorizontal: 16, height: 48 },
   searchInput: { flex: 1, marginLeft: 8, fontSize: 16, color: '#111827' },
   groupItem: { flexDirection: 'row', alignItems: 'center', paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: '#F3F4F6' },
-  avatar: { width: 48, height: 48, borderRadius: 24, backgroundColor: '#E5E7EB', alignItems: 'center', justifyContent: 'center', marginRight: 12 },
+  avatar: { width: 48, height: 48, borderRadius: 24, backgroundColor: '#E5E7EB', alignItems: 'center', justifyContent: 'center', marginRight: 12, overflow: 'hidden' },
   avatarText: { fontSize: 16, fontWeight: '700', color: '#374151' },
   groupInfo: { flex: 1 },
   groupName: { fontSize: 15, fontWeight: '700', color: '#111827' },

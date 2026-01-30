@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Pressable, ScrollView, StatusBar } from 'react-native';
+import { View, Text, StyleSheet, Pressable, ScrollView, StatusBar, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useRoute } from '@react-navigation/native';
@@ -48,8 +48,10 @@ export default function ProfileScreen({ navigation }: any) {
       <View style={styles.header}>
         <View style={styles.headerTop}>
           <View style={styles.avatarContainer}>
-             {/* Placeholder pre Avatar */}
-             <View style={styles.avatar} /> 
+             <Image
+               source={{ uri: 'https://randomuser.me/api/portraits/men/32.jpg' }}
+               style={styles.avatar}
+             />
           </View>
           
           <View style={styles.statsContainer}>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TextInput, KeyboardAvoidingView, Platform, Pressable } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TextInput, KeyboardAvoidingView, Platform, Pressable, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { BottomTabs } from '../components/BottomTabs';
@@ -26,8 +26,8 @@ export default function ChatDetailScreen() {
       <ScrollView style={styles.chatArea} contentContainerStyle={{ paddingVertical: 16, paddingBottom: 140 }}>
         
         {/* Left Message */}
-        <View style={styles.rowLeft}>
-           <View style={styles.avatarSmall} />
+      <View style={styles.rowLeft}>
+         <Image source={{ uri: 'https://randomuser.me/api/portraits/women/44.jpg' }} style={styles.avatarSmall} />
            <View>
               <View style={styles.bubbleLeft}><Text style={styles.textLeft}>Emma respond to You</Text></View>
               <View style={[styles.bubbleLeft, {marginTop: 4}]}><Text style={styles.textLeft}>Are you watching the game?</Text></View>
@@ -35,16 +35,16 @@ export default function ChatDetailScreen() {
         </View>
 
         {/* Right Message */}
-        <View style={styles.rowRight}>
+      <View style={styles.rowRight}>
            <View style={styles.bubbleRight}>
               <Text style={styles.textRight}>Yeah! That goal was insane 🚀</Text>
            </View>
-           <View style={styles.avatarSmall} />
+         <Image source={{ uri: 'https://randomuser.me/api/portraits/men/32.jpg' }} style={styles.avatarSmall} />
         </View>
 
         {/* Left Message */}
-        <View style={styles.rowLeft}>
-           <View style={styles.avatarSmall} />
+      <View style={styles.rowLeft}>
+         <Image source={{ uri: 'https://randomuser.me/api/portraits/women/44.jpg' }} style={styles.avatarSmall} />
            <View style={styles.bubbleLeft}><Text style={styles.textLeft}>Totally agree!</Text></View>
         </View>
 

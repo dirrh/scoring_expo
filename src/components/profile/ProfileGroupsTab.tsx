@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TextInput, Pressable } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TextInput, Pressable, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 export function ProfileGroupsTab() {
@@ -22,9 +22,9 @@ export function ProfileGroupsTab() {
             <Text style={styles.groupName}>My Friends Group</Text>
          </View>
          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <View style={[styles.avatarStack, {zIndex: 3}]} />
-            <View style={[styles.avatarStack, {zIndex: 2, marginLeft: -10, backgroundColor: '#9CA3AF'}]} />
-            <View style={[styles.avatarStack, {zIndex: 1, marginLeft: -10, backgroundColor: '#6B7280'}]} />
+            <Image source={{ uri: 'https://randomuser.me/api/portraits/men/12.jpg' }} style={[styles.avatarStack, {zIndex: 3}]} />
+            <Image source={{ uri: 'https://randomuser.me/api/portraits/women/21.jpg' }} style={[styles.avatarStack, {zIndex: 2, marginLeft: -10}]} />
+            <Image source={{ uri: 'https://randomuser.me/api/portraits/men/36.jpg' }} style={[styles.avatarStack, {zIndex: 1, marginLeft: -10}]} />
             <Text style={{fontSize: 12, color: '#6B7280', marginLeft: 8}}>You, John, and 3 others</Text>
          </View>
       </View>
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   
   groupCard: { backgroundColor: '#FFFFFF', borderRadius: 16, padding: 16, marginBottom: 12 },
   groupName: { fontSize: 14, fontWeight: '700', color: '#111827' },
-  avatarStack: { width: 24, height: 24, borderRadius: 12, backgroundColor: '#D1D5DB', borderWidth: 2, borderColor: 'white' },
+  avatarStack: { width: 24, height: 24, borderRadius: 12, backgroundColor: '#D1D5DB', borderWidth: 2, borderColor: 'white', overflow: 'hidden' },
 
   recCard: { backgroundColor: '#FFFFFF', borderRadius: 16, padding: 12, marginBottom: 12, flexDirection: 'row', alignItems: 'center' },
   iconCircle: { width: 40, height: 40, borderRadius: 20, backgroundColor: '#F3F4F6', alignItems: 'center', justifyContent: 'center' },

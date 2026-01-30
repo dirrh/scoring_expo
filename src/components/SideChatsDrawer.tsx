@@ -6,7 +6,8 @@ import {
   Dimensions, 
   TextInput, 
   ScrollView, 
-  Pressable 
+  Pressable,
+  Image
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { 
@@ -32,12 +33,12 @@ const SPRING_CONFIG = {
 
 // --- MOCK DATA ---
 const CHATS = [
-  { id: '1', name: 'Emma Collins', msg: 'You: That second goal was...', time: '20:07', initial: 'EC', active: true },
-  { id: '2', name: 'Tom Wilson', msg: 'Haaland is just on another...', time: '19:07', initial: 'TW', active: false },
-  { id: '3', name: 'James Carter', msg: 'You: Stats look much bette...', time: '17:07', initial: 'JC', active: true },
-  { id: '4', name: 'Laura Bennett', msg: 'Referee was terrible in the...', time: 'SAT', initial: 'LB', active: true },
-  { id: '5', name: 'Peter Horváth', msg: 'Ten gól v 67. minúte rozho...', time: 'SAT', initial: 'PH', active: false },
-  { id: '6', name: 'Daniel Smith', msg: 'You: Are you joining the Pr...', time: '6.12.', initial: 'DS', active: true },
+  { id: '1', name: 'Emma Collins', msg: 'You: That second goal was...', time: '20:07', initial: 'EC', active: true, avatar: 'https://randomuser.me/api/portraits/women/44.jpg' },
+  { id: '2', name: 'Tom Wilson', msg: 'Haaland is just on another...', time: '19:07', initial: 'TW', active: false, avatar: 'https://randomuser.me/api/portraits/men/41.jpg' },
+  { id: '3', name: 'James Carter', msg: 'You: Stats look much bette...', time: '17:07', initial: 'JC', active: true, avatar: 'https://randomuser.me/api/portraits/men/52.jpg' },
+  { id: '4', name: 'Laura Bennett', msg: 'Referee was terrible in the...', time: 'SAT', initial: 'LB', active: true, avatar: 'https://randomuser.me/api/portraits/women/68.jpg' },
+  { id: '5', name: 'Peter Horváth', msg: 'Ten gól v 67. minúte rozho...', time: 'SAT', initial: 'PH', active: false, avatar: 'https://randomuser.me/api/portraits/men/12.jpg' },
+  { id: '6', name: 'Daniel Smith', msg: 'You: Are you joining the Pr...', time: '6.12.', initial: 'DS', active: true, avatar: 'https://randomuser.me/api/portraits/men/76.jpg' },
 ];
 
 export const SideChatsDrawer = () => {
@@ -127,9 +128,7 @@ export const SideChatsDrawer = () => {
                 style={styles.chatItem} 
                 onPress={() => handleChatPress(chat.name)}
               >
-                <View style={styles.avatar}>
-                  <Text style={styles.avatarText}>{chat.initial}</Text>
-                </View>
+                <Image source={{ uri: chat.avatar }} style={styles.avatar} />
                 <View style={styles.chatInfo}>
                   <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                     <Text style={styles.chatName}>{chat.name}</Text>
@@ -220,7 +219,7 @@ const styles = StyleSheet.create({
   searchInput: { flex: 1, marginLeft: 8, fontSize: 16, color: '#111827' },
   
   chatItem: { flexDirection: 'row', alignItems: 'center', paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: '#F3F4F6' },
-  avatar: { width: 48, height: 48, borderRadius: 24, backgroundColor: '#E5E7EB', alignItems: 'center', justifyContent: 'center', marginRight: 12 },
+  avatar: { width: 48, height: 48, borderRadius: 24, backgroundColor: '#E5E7EB', alignItems: 'center', justifyContent: 'center', marginRight: 12, overflow: 'hidden' },
   avatarText: { fontSize: 16, fontWeight: '700', color: '#374151' },
   chatInfo: { flex: 1 },
   chatName: { fontSize: 15, fontWeight: '700', color: '#111827' },

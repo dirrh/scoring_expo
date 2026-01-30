@@ -1,13 +1,13 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Pressable, TextInput } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable, TextInput, Image } from 'react-native';
 import { useOptionalNavigation } from '../../hooks/useOptionalNavigation';
 import { Ionicons } from '@expo/vector-icons';
 
 const CHATS = [
-  { id: '1', name: "Emma Collins", message: "You: That second goal was...", time: "20:07", read: true },
-  { id: '2', name: "Tom Wilson", message: "Haaland is just on another...", time: "19:07", read: false },
-  { id: '3', name: "James Carter", message: "You: Stats look much better...", time: "17:07", read: true },
-  { id: '4', name: "Laura Bennett", message: "Referee was terrible in the...", time: "SAT", read: true },
+  { id: '1', name: "Emma Collins", message: "You: That second goal was...", time: "20:07", read: true, avatar: "https://randomuser.me/api/portraits/women/44.jpg" },
+  { id: '2', name: "Tom Wilson", message: "Haaland is just on another...", time: "19:07", read: false, avatar: "https://randomuser.me/api/portraits/men/41.jpg" },
+  { id: '3', name: "James Carter", message: "You: Stats look much better...", time: "17:07", read: true, avatar: "https://randomuser.me/api/portraits/men/52.jpg" },
+  { id: '4', name: "Laura Bennett", message: "Referee was terrible in the...", time: "SAT", read: true, avatar: "https://randomuser.me/api/portraits/women/68.jpg" },
 ];
 
 export function ProfileChatsTab() {
@@ -27,7 +27,7 @@ export function ProfileChatsTab() {
             onPress={() => navigation?.navigate?.('ChatDetail', { name: chat.name })}
             style={styles.chatRow}
           >
-            <View style={styles.avatar}>{/* Initials or Img */}<Text style={{fontWeight:'bold'}}>{chat.name[0]}</Text></View>
+            <Image source={{ uri: chat.avatar }} style={styles.avatar} />
             <View style={{flex: 1, marginRight: 8}}>
                <View style={{flexDirection:'row', justifyContent:'space-between'}}>
                  <Text style={styles.name}>{chat.name}</Text>

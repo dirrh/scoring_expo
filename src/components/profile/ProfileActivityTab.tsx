@@ -83,7 +83,10 @@ export const ProfileActivityTab = () => {
         {posts.map((post) => (
           <View key={post.id} style={styles.postCard}>
             <View style={styles.postHeader}>
-              <View style={styles.avatar} />
+              <Image
+                source={{ uri: 'https://randomuser.me/api/portraits/men/32.jpg' }}
+                style={styles.avatar}
+              />
               <View>
                 <Text style={styles.name}>
                   {AUTHOR_NAME} <Text style={styles.time}>• {post.time}</Text>

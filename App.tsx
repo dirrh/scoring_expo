@@ -1,8 +1,8 @@
 import "./global.css";
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, type NavigationContainerRef } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
@@ -16,6 +16,7 @@ import PlayerDetailScreen from './src/screens/PlayerDetailScreen';
 // --- PROFILE SECTION ---
 import ProfileScreen from './src/screens/ProfileScreen';
 import ChatDetailScreen from './src/screens/ChatDetailScreen';
+import SocialReelsScreen from './src/screens/SocialReelsScreen';
 
 // --- BETTING SECTION ---
 import BettingScreen from './src/screens/BettingScreen'; 
@@ -46,12 +47,28 @@ if (globalAny.ErrorUtils && !globalAny.__globalErrorHandlerSet) {
 }
 
 export default function App() {
+  const navigationRef = useRef<NavigationContainerRef<any>>(null);
+  const [activeRouteName, setActiveRouteName] = useState<string>('Home');
+
+  const handleStateChange = () => {
+    const routeName = navigationRef.current?.getCurrentRoute?.()?.name;
+    if (routeName && routeName !== activeRouteName) {
+      setActiveRouteName(routeName);
+    }
+  };
+
+  const shouldHideGlobalButtons = activeRouteName === 'SocialReels';
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         {/* Celú navigáciu obalíme do NotificationProvider, aby fungoval Context */}
         <NotificationProvider>
-          <NavigationContainer>
+          <NavigationContainer
+            ref={navigationRef}
+            onReady={handleStateChange}
+            onStateChange={handleStateChange}
+          >
             <Stack.Navigator 
               initialRouteName="Home"
               screenOptions={{ 
@@ -72,6 +89,7 @@ export default function App() {
               {/* --- PROFILE SECTION --- */}
               <Stack.Screen name="Profile" component={ProfileScreen} />
               <Stack.Screen name="ChatDetail" component={ChatDetailScreen} />
+              <Stack.Screen name="SocialReels" component={SocialReelsScreen} />
 
               {/* --- DETAIL SCREENS --- */}
               <Stack.Screen name="MatchDetail" component={MatchDetailScreen} />
@@ -84,11 +102,11 @@ export default function App() {
             {/* --- GLOBÁLNE KOMPONENTY (Plávajú nad všetkým) --- */}
             
             {/* 1. Notifikačné tlačidlo (Fialové) */}
-            <GlobalNotificationButton />
+            {!shouldHideGlobalButtons && <GlobalNotificationButton />}
 
             {/* 2. Bočný panel skupín (Vysúvacie menu) */}
-            <SideGroupsDrawer />
-            <SideChatsDrawer />
+            {!shouldHideGlobalButtons && <SideGroupsDrawer />}
+            {!shouldHideGlobalButtons && <SideChatsDrawer />}
           </NavigationContainer>
         </NotificationProvider>
       </SafeAreaProvider>

@@ -1,30 +1,33 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Modal, Pressable } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Modal, Pressable, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNotificationPosition } from '../context/NotificationContext';
 
 const NOTIFICATIONS = [
-  { 
+  {
     id: 1, 
     name: "Lucia Nováková", 
     action: "mentioned you", 
     context: "My Friends Group · Man City vs Liverpool", 
-    time: "5 min ago" 
+    time: "5 min ago",
+    avatar: "https://randomuser.me/api/portraits/women/65.jpg"
   },
   { 
     id: 2, 
     name: "Peter Horváth", 
     action: "sent a message in", 
     context: "Premier League Room", 
-    time: "12 min ago" 
+    time: "12 min ago",
+    avatar: "https://randomuser.me/api/portraits/men/12.jpg"
   },
   { 
     id: 3, 
     name: "Emma Collins", 
     action: "sent you a private message", 
     context: "\"Are you watching the match?\"", 
-    time: "15 min ago" 
+    time: "15 min ago",
+    avatar: "https://randomuser.me/api/portraits/women/44.jpg"
   }
 ];
 
@@ -73,7 +76,7 @@ export const GlobalNotificationButton = () => {
                 styles.notifItem, 
                 index !== NOTIFICATIONS.length - 1 && styles.borderBottom
               ]}>
-                 <View style={styles.notifAvatar} />
+                 <Image source={{ uri: notif.avatar }} style={styles.notifAvatar} />
                  <View style={{flex: 1}}>
                     <Text style={styles.notifText}>
                        <Text style={{fontWeight: 'bold'}}>{notif.name}</Text> {notif.action}
